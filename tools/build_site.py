@@ -42,7 +42,7 @@ CHAPTER_DESCRIPTIONS = {
 INTRO = "一本从直觉出发的雷达信号处理入门教程。"
 GITHUB_URL = "https://github.com/apple-art/easy-radar-tutorial"
 SITE_URL = "https://apple-art.github.io/easy-radar-tutorial/"
-ASSET_VERSION = "20260506-toc-card-arrow"
+ASSET_VERSION = "20260506-table-code-fix"
 DEFAULT_SOURCE_DIR = Path(r"D:\Obsidian\唐承乾的笔记本\雷达教材\知乎版\系列文章")
 PROMO_CUTOFF_MARKERS = (
     "相关资料放在了公众号",
@@ -188,6 +188,14 @@ class MarkdownRenderer:
 
         text = re.sub(r"`([^`]+)`", code_repl, text)
         text = re.sub(r"!\[([^\]]*)\]\(([^)]+)\)", image_repl, text)
+
+        math_tokens: list[str] = []
+
+        def math_repl(match: re.Match[str]) -> str:
+            math_tokens.append(html.escape(match.group(0), quote=False))
+            return f"@@MATH{len(math_tokens) - 1}@@"
+
+        text = re.sub(r"(?<!\$)\$(?!\$)(.+?)(?<!\\)\$(?!\$)", math_repl, text)
         text = html.escape(text, quote=False)
 
         def link_repl(match: re.Match[str]) -> str:
@@ -202,6 +210,8 @@ class MarkdownRenderer:
             text = text.replace(f"@@CODE{index}@@", rendered)
         for index, rendered in enumerate(image_tokens):
             text = text.replace(f"@@IMG{index}@@", rendered)
+        for index, rendered in enumerate(math_tokens):
+            text = text.replace(f"@@MATH{index}@@", rendered)
         return text
 
     def table(self, lines: list[str]) -> str:
@@ -210,6 +220,56 @@ class MarkdownRenderer:
             return ""
         body = rows[2:] if re.match(r"^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$", lines[1]) else rows[1:]
         head_html = "".join(f"<th>{self.inline(cell)}</th>" for cell in rows[0])
+        body_html = "".join(
+            "<tr>" + "".join(f"<td>{self.inline(cell)}</td>" for cell in row) + "</tr>" for row in body
+        )
+        return f'<div class="table-wrap"><table><thead><tr>{head_html}</tr></thead><tbody>{body_html}</tbody></table></div>'
+
+    def compact_table(self, text: str) -> str | None:
+        """Handle single-line pipe tables copied from Markdown with row breaks lost."""
+        if not text.strip().startswith("|") or not re.search(r"\|+\s*:?-{2,}:?\s*\|", text):
+            return None
+        tokens = [cell.strip() for cell in text.strip().strip("|").split("|")]
+        separator_start = None
+        separator_len = 0
+        for index, token in enumerate(tokens):
+            if not re.fullmatch(r":?-{2,}:?", token):
+                continue
+            end = index
+            while end < len(tokens) and re.fullmatch(r":?-{2,}:?", tokens[end]):
+                end += 1
+            if end - index >= 2:
+                separator_start = index
+                separator_len = end - index
+                break
+        if separator_start is None:
+            return None
+        column_count = separator_len
+        header_cells = tokens[:separator_start]
+        if header_cells and header_cells[-1] == "":
+            header_cells = header_cells[:-1]
+        header = ([""] * column_count + header_cells)[-column_count:]
+
+        body: list[list[str]] = []
+        current: list[str] = []
+        for token in tokens[separator_start + separator_len :]:
+            if token == "" and not current:
+                continue
+            if token == "" and len(current) == column_count:
+                body.append(current)
+                current = []
+                continue
+            current.append(token)
+            if len(current) == column_count:
+                body.append(current)
+                current = []
+        if current:
+            current.extend([""] * (column_count - len(current)))
+            body.append(current[:column_count])
+        if not body:
+            return None
+
+        head_html = "".join(f"<th>{self.inline(cell)}</th>" for cell in header)
         body_html = "".join(
             "<tr>" + "".join(f"<td>{self.inline(cell)}</td>" for cell in row) + "</tr>" for row in body
         )
@@ -231,7 +291,8 @@ class MarkdownRenderer:
             if paragraph:
                 joined = " ".join(part.strip() for part in paragraph).strip()
                 if joined:
-                    out.append(f"<p>{self.inline(joined)}</p>")
+                    compact_table = self.compact_table(joined)
+                    out.append(compact_table if compact_table else f"<p>{self.inline(joined)}</p>")
                 paragraph.clear()
 
         index = 0
@@ -1844,6 +1905,64 @@ figure img { box-shadow: 0 22px 58px rgba(47, 39, 28, 0.16); }
   }
 }
 
+/* Article tables and MATLAB listings: keep technical material readable locally. */
+.prose .table-wrap {
+  margin: 30px 0;
+  padding: 1px;
+  border-radius: 22px;
+  background: linear-gradient(135deg, rgba(201, 137, 63, 0.3), rgba(13, 71, 70, 0.16));
+  box-shadow: 0 18px 42px rgba(47, 39, 28, 0.1);
+}
+.prose table {
+  border-collapse: separate;
+  border-spacing: 0;
+  min-width: 680px;
+  overflow: hidden;
+  border-radius: 21px;
+  background: rgba(255, 253, 248, 0.94);
+}
+.prose th,
+.prose td {
+  border: 0;
+  border-right: 1px solid rgba(13, 71, 70, 0.1);
+  border-bottom: 1px solid rgba(13, 71, 70, 0.1);
+}
+.prose th:last-child,
+.prose td:last-child { border-right: 0; }
+.prose tbody tr:last-child td { border-bottom: 0; }
+.prose th {
+  color: #f8edda;
+  background: linear-gradient(135deg, #0b4544, #1f6b66);
+  font-weight: 900;
+}
+.prose tbody tr:nth-child(even) td { background: rgba(13, 71, 70, 0.035); }
+.prose tbody tr:hover td { background: rgba(201, 137, 63, 0.08); }
+.prose pre {
+  position: relative;
+  margin: 30px 0;
+  padding: 24px 26px;
+  border: 1px solid rgba(180, 221, 205, 0.1);
+  border-radius: 22px;
+  color: #f3ead7;
+  background:
+    radial-gradient(circle at 12% 0%, rgba(135, 182, 162, 0.12), transparent 18rem),
+    linear-gradient(145deg, #082f30, #104748);
+}
+.prose pre code {
+  display: block;
+  min-width: max-content;
+  color: #f3ead7;
+  font-size: 15px;
+  line-height: 1.55;
+  tab-size: 4;
+}
+.code-comment { color: #8bcfa4; font-style: italic; }
+.code-keyword { color: #ffd37a; font-weight: 800; }
+.code-function { color: #8fd7ff; }
+.code-number { color: #f2a46f; }
+.code-string { color: #d9ea8a; }
+.code-operator { color: #b8d2cf; }
+
 /* Reading mode: collapsible table of contents for centered, immersive chapters. */
 .toc-toggle {
   position: absolute;
@@ -2012,6 +2131,65 @@ JS = r"""
     setTocCollapsed(saved);
     tocToggle.addEventListener('click',()=>setTocCollapsed(!document.body.classList.contains('toc-collapsed')));
   }
+  function escapeCode(text){
+    return text.replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+  }
+  function highlightMatlabLine(line){
+    const keywords=new Set(['break','case','catch','classdef','continue','else','elseif','end','for','function','global','if','otherwise','parfor','persistent','return','spmd','switch','try','while']);
+    const builtins=new Set(['abs','angle','axis','ceil','close','clc','clear','colorbar','conj','conv','cos','db','disp','exp','fft','fftshift','figure','find','floor','fliplr','grid','ifft','imag','imagesc','length','linspace','log10','max','mean','min','ones','plot','randn','real','round','sin','size','sqrt','strel','sum','title','xlabel','ylabel','zeros']);
+    let html='';
+    let index=0;
+    while(index<line.length){
+      const rest=line.slice(index);
+      const char=line[index];
+      if(char==='%'){
+        html+=`<span class="code-comment">${escapeCode(rest)}</span>`;
+        break;
+      }
+      if(char==="'"){
+        let end=index+1;
+        while(end<line.length){
+          if(line[end]==="'"){
+            end+=1;
+            if(line[end]==="'"){
+              end+=1;
+              continue;
+            }
+            break;
+          }
+          end+=1;
+        }
+        html+=`<span class="code-string">${escapeCode(line.slice(index,end))}</span>`;
+        index=end;
+        continue;
+      }
+      const number=rest.match(/^\d+(?:\.\d+)?(?:e[+-]?\d+)?/i);
+      if(number){
+        html+=`<span class="code-number">${number[0]}</span>`;
+        index+=number[0].length;
+        continue;
+      }
+      const word=rest.match(/^[A-Za-z_]\w*/);
+      if(word){
+        const token=word[0];
+        const className=keywords.has(token) ? 'code-keyword' : builtins.has(token) ? 'code-function' : '';
+        html+=className ? `<span class="${className}">${token}</span>` : escapeCode(token);
+        index+=token.length;
+        continue;
+      }
+      if(/[()[\]{}.,;:+\-*\/\\=<>~&|^]/.test(char)){
+        html+=`<span class="code-operator">${escapeCode(char)}</span>`;
+      }else{
+        html+=escapeCode(char);
+      }
+      index+=1;
+    }
+    return html;
+  }
+  document.querySelectorAll('pre code.language-matlab').forEach(code=>{
+    code.innerHTML=code.textContent.split('\n').map(highlightMatlabLine).join('\n');
+    code.classList.add('is-highlighted');
+  });
   function updateProgress(){
     if(!bar)return;
     const max=document.documentElement.scrollHeight-window.innerHeight;

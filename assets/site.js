@@ -33,6 +33,65 @@
     setTocCollapsed(saved);
     tocToggle.addEventListener('click',()=>setTocCollapsed(!document.body.classList.contains('toc-collapsed')));
   }
+  function escapeCode(text){
+    return text.replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+  }
+  function highlightMatlabLine(line){
+    const keywords=new Set(['break','case','catch','classdef','continue','else','elseif','end','for','function','global','if','otherwise','parfor','persistent','return','spmd','switch','try','while']);
+    const builtins=new Set(['abs','angle','axis','ceil','close','clc','clear','colorbar','conj','conv','cos','db','disp','exp','fft','fftshift','figure','find','floor','fliplr','grid','ifft','imag','imagesc','length','linspace','log10','max','mean','min','ones','plot','randn','real','round','sin','size','sqrt','strel','sum','title','xlabel','ylabel','zeros']);
+    let html='';
+    let index=0;
+    while(index<line.length){
+      const rest=line.slice(index);
+      const char=line[index];
+      if(char==='%'){
+        html+=`<span class="code-comment">${escapeCode(rest)}</span>`;
+        break;
+      }
+      if(char==="'"){
+        let end=index+1;
+        while(end<line.length){
+          if(line[end]==="'"){
+            end+=1;
+            if(line[end]==="'"){
+              end+=1;
+              continue;
+            }
+            break;
+          }
+          end+=1;
+        }
+        html+=`<span class="code-string">${escapeCode(line.slice(index,end))}</span>`;
+        index=end;
+        continue;
+      }
+      const number=rest.match(/^\d+(?:\.\d+)?(?:e[+-]?\d+)?/i);
+      if(number){
+        html+=`<span class="code-number">${number[0]}</span>`;
+        index+=number[0].length;
+        continue;
+      }
+      const word=rest.match(/^[A-Za-z_]\w*/);
+      if(word){
+        const token=word[0];
+        const className=keywords.has(token) ? 'code-keyword' : builtins.has(token) ? 'code-function' : '';
+        html+=className ? `<span class="${className}">${token}</span>` : escapeCode(token);
+        index+=token.length;
+        continue;
+      }
+      if(/[()[\]{}.,;:+\-*\/\\=<>~&|^]/.test(char)){
+        html+=`<span class="code-operator">${escapeCode(char)}</span>`;
+      }else{
+        html+=escapeCode(char);
+      }
+      index+=1;
+    }
+    return html;
+  }
+  document.querySelectorAll('pre code.language-matlab').forEach(code=>{
+    code.innerHTML=code.textContent.split('\n').map(highlightMatlabLine).join('\n');
+    code.classList.add('is-highlighted');
+  });
   function updateProgress(){
     if(!bar)return;
     const max=document.documentElement.scrollHeight-window.innerHeight;

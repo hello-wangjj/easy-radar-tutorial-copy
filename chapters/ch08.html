@@ -7,10 +7,10 @@
   <meta name="description" content="这一节只保留距离处理链中的最小部分：生成发射信号，构造单目标回波，做匹配滤波，再由主峰位置换算目标距离。这样可以先把第4章的时延公式和匹配滤波公式在 MATLAB 中对应起来。">
   <link rel="canonical" href="https://apple-art.github.io/easy-radar-tutorial/chapters/ch08.html">
   <link rel="icon" href="../design/icon-concepts/logo-mark-light.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../assets/site.css?v=20260506-toc-card-arrow">
+  <link rel="stylesheet" href="../assets/site.css?v=20260506-table-code-fix">
   <script>window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']] }, svg: { fontCache: 'global' } };</script>
   <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
-  <script defer src="../assets/site.js?v=20260506-toc-card-arrow"></script>
+  <script defer src="../assets/site.js?v=20260506-table-code-fix"></script>
 </head>
 <body><div class="read-progress" aria-hidden="true"><span></span></div>
 <header class="article-top">
@@ -49,7 +49,7 @@ $$</div>
 <div class="math-block">$$
 h(t)=s^*(-t), \qquad y(t)=r(t)*h(t)
 $$</div>
-<p>其中 $s^<em>(t)$ 表示 $s(t)$ 的共轭，$</em>$ 表示卷积运算。</p>
+<p>其中 $s^*(t)$ 表示 $s(t)$ 的共轭，$*$ 表示卷积运算。</p>
 <h3 id="sub-122">公式与程序变量对应</h3>
 <p>程序里的主要符号、变量和物理意义见表8-1。</p>
 <div class="table-wrap"><table><thead><tr><th>公式/符号</th><th>MATLAB 变量或表达式</th><th>含义</th></tr></thead><tbody><tr><td>$c$</td><td><code>c</code></td><td>光速 (m/s)</td></tr><tr><td>$B$</td><td><code>B</code></td><td>LFM 带宽 (Hz)</td></tr><tr><td>$T_p$</td><td><code>Tp</code></td><td>脉冲宽度 (s)</td></tr><tr><td>$f_s$</td><td><code>fs</code></td><td>采样率 (Hz)</td></tr><tr><td>$R_0$</td><td><code>R0</code></td><td>目标真实距离 (m)</td></tr><tr><td>$k=B/T_p$</td><td><code>k = B / Tp</code></td><td>调频斜率 (Hz/s)</td></tr><tr><td>$N_{\text{fast}}=T_p f_s$</td><td><code>N_fast = round(Tp * fs)</code></td><td>一个脉冲内的采样点数</td></tr><tr><td>$s(t)$</td><td><code>tx</code></td><td>发射基带 LFM 脉冲</td></tr><tr><td>$\tau_0 = 2R_0 / c$</td><td><code>delay_time = 2 * R0 / c</code></td><td>双程传播时延 (s)</td></tr><tr><td>$n_0 = \tau_0 f_s$</td><td><code>delay_samples = round(delay_time * fs)</code></td><td>时延对应的采样点数</td></tr><tr><td>$r(t)=s(t-\tau_0)+w(t)$</td><td><code>rx</code></td><td>延迟回波加噪声</td></tr><tr><td>$h(t)=s^*(-t)$</td><td><code>mf = conj(fliplr(tx))</code></td><td>匹配滤波器</td></tr><tr><td>$y(t)=r(t)*h(t)$</td><td><code>range_profile = conv(rx, mf, &#x27;same&#x27;)</code></td><td>匹配滤波输出</td></tr><tr><td>$\hat R$</td><td><code>R_est</code></td><td>距离估计值 (m)</td></tr></tbody></table></div>
@@ -424,7 +424,7 @@ end</code></pre>
 <p>前面三节分别给出了距离处理、速度处理和检测的分步实现。本节把它们合成一份完整程序，并给出四个处理阶段的可视化结果。程序虽然更长，但其内部关系并不比前面复杂，只是把第4章到第6章的公式按顺序写到同一个脚本里。</p>
 <h3 id="sub-136">完整代码与分段注释</h3>
 <p>完整程序可以按表8-2理解。</p>
-<div class="table-wrap"><table><thead><tr><th>处理环节</th><th>主要公式</th><th>MATLAB 变量</th></tr></thead><tbody><tr><td>发射信号生成</td><td>$k=B/T_p$, $s(t)$</td><td><code>k</code>, <code>tx</code></td></tr><tr><td>回波建模</td><td>$\tau_i=2R_i/c$, $f_{d,i}=2v_i/\lambda$</td><td><code>tau</code>, <code>fd</code>, <code>rx_matrix</code></td></tr><tr><td>距离压缩</td><td>$h(t)=s^<em>(-t)$, $y(t)=r(t)</em>h(t)$</td><td><code>mf</code>, <code>range_data</code></td></tr><tr><td>多普勒处理</td><td>$v=\lambda f_d/2$</td><td><code>rd_map</code>, <code>rd_power</code>, <code>vel_axis</code></td></tr><tr><td>检测判决</td><td>$\delta(x)$</td><td><code>threshold</code>, <code>det_mask</code></td></tr><tr><td>物理量输出</td><td>$\hat R$, $\hat v$</td><td><code>range_est</code>, <code>vel_est</code></td></tr></tbody></table></div>
+<div class="table-wrap"><table><thead><tr><th>处理环节</th><th>主要公式</th><th>MATLAB 变量</th></tr></thead><tbody><tr><td>发射信号生成</td><td>$k=B/T_p$, $s(t)$</td><td><code>k</code>, <code>tx</code></td></tr><tr><td>回波建模</td><td>$\tau_i=2R_i/c$, $f_{d,i}=2v_i/\lambda$</td><td><code>tau</code>, <code>fd</code>, <code>rx_matrix</code></td></tr><tr><td>距离压缩</td><td>$h(t)=s^*(-t)$, $y(t)=r(t)*h(t)$</td><td><code>mf</code>, <code>range_data</code></td></tr><tr><td>多普勒处理</td><td>$v=\lambda f_d/2$</td><td><code>rd_map</code>, <code>rd_power</code>, <code>vel_axis</code></td></tr><tr><td>检测判决</td><td>$\delta(x)$</td><td><code>threshold</code>, <code>det_mask</code></td></tr><tr><td>物理量输出</td><td>$\hat R$, $\hat v$</td><td><code>range_est</code>, <code>vel_est</code></td></tr></tbody></table></div>
 <p>下面给出完整 MATLAB 程序。</p>
 <p>如果你想把本章处理链一次完整跑通，可参考 <a class="inline-code-link" href="https://github.com/apple-art/easy-radar-tutorial/blob/main/matlab/%E7%AC%AC%E5%85%AB%E7%AB%A0/ch08_full_processing_chain_demo.m"><code>ch08_full_processing_chain_demo.m</code></a>。若你是第一次看本章，更建议先按前面几节的顺序分别对照 <a class="inline-code-link" href="https://github.com/apple-art/easy-radar-tutorial/blob/main/matlab/%E7%AC%AC%E5%85%AB%E7%AB%A0/ch08_minimal_pulse_radar_demo.m"><code>ch08_minimal_pulse_radar_demo.m</code></a>、<a class="inline-code-link" href="https://github.com/apple-art/easy-radar-tutorial/blob/main/matlab/%E7%AC%AC%E5%85%AB%E7%AB%A0/ch08_range_doppler_demo.m"><code>ch08_range_doppler_demo.m</code></a> 和 <a class="inline-code-link" href="https://github.com/apple-art/easy-radar-tutorial/blob/main/matlab/%E7%AC%AC%E5%85%AB%E7%AB%A0/ch08_radar_detection_demo.m"><code>ch08_radar_detection_demo.m</code></a>，最后再回来看这一份完整脚本。</p>
 <pre><code class="language-matlab">% ch08_full_processing_chain_demo.m

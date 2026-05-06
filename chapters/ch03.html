@@ -7,10 +7,10 @@
   <meta name="description" content="雷达要探测目标，首先得向空中发射电磁波。发什么样的波，是整个雷达系统设计的起点。工程上有两种基本方案：脉冲波和连续波。两种方案有各自的特点，工程实现的时候常常需要权衡。">
   <link rel="canonical" href="https://apple-art.github.io/easy-radar-tutorial/chapters/ch03.html">
   <link rel="icon" href="../design/icon-concepts/logo-mark-light.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../assets/site.css?v=20260506-toc-card-arrow">
+  <link rel="stylesheet" href="../assets/site.css?v=20260506-table-code-fix">
   <script>window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']] }, svg: { fontCache: 'global' } };</script>
   <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
-  <script defer src="../assets/site.js?v=20260506-toc-card-arrow"></script>
+  <script defer src="../assets/site.js?v=20260506-table-code-fix"></script>
 </head>
 <body><div class="read-progress" aria-hidden="true"><span></span></div>
 <header class="article-top">
@@ -50,7 +50,7 @@ $$</div>
 <p>连续波雷达在测速上有先天优势。发射信号是连续的，接收到的回波频率和发射频率的差值（多普勒频移）可以被非常精确地测量出来。测速雷达（俗称测速枪）和气象多普勒雷达，大多是连续波或调频连续波（FMCW）。</p>
 <p>但连续波雷达有一个明显的弱点：直接测距难。因为发和收同时进行，不存在一个明确的"出发时刻"可以用来计时。FMCW（调频连续波）通过给发射频率加线性扫频的方式，间接实现了测距能力，这部分内容到第4章再展开。</p>
 <p>两种方案的对比：</p>
-<p>| | 脉冲雷达 | 连续波雷达 | |--|--|--| | 发射方式 | 短暂脉冲，间歇发射 | 持续发射 | | 测距 | 直接，靠时间差 | 困难（FMCW 可间接实现） | | 测速 | 需要多个脉冲对比 | 优秀，直接读多普勒频移 | | 发收隔离 | 天然隔离（时间分开） | 需要额外处理 | | 典型应用 | 军事雷达、气象雷达（远程） | 测速枪、FMCW 汽车雷达 |</p>
+<div class="table-wrap"><table><thead><tr><th></th><th>脉冲雷达</th><th>连续波雷达</th></tr></thead><tbody><tr><td>发射方式</td><td>短暂脉冲，间歇发射</td><td>持续发射</td></tr><tr><td>测距</td><td>直接，靠时间差</td><td>困难（FMCW 可间接实现）</td></tr><tr><td>测速</td><td>需要多个脉冲对比</td><td>优秀，直接读多普勒频移</td></tr><tr><td>发收隔离</td><td>天然隔离（时间分开）</td><td>需要额外处理</td></tr><tr><td>典型应用</td><td>军事雷达、气象雷达（远程）</td><td>测速枪、FMCW 汽车雷达</td></tr></tbody></table></div>
 <p>本书后续章节以<strong>脉冲雷达</strong>为主要分析对象，因为它的信号处理链条最完整、也是雷达入门学习的标准路径。</p>
 <p>不管发射什么样的信号，电磁波离开天线之后，都要经历"碰到目标→被反射→回波返回"这个过程。信号在这段旅程里发生了什么？下一节来看。</p></section><section class="chapter-section" data-section="ch03-s02"><h2 id="ch03-s02" class="section-title">3.2 反射与截面积</h2>
 <p>雷达发射的电磁波飞出去，遇到目标——飞机、船只、雨滴、地面——会发生什么？</p>

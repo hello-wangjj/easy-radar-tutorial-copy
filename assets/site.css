@@ -1228,6 +1228,64 @@ figure img { box-shadow: 0 22px 58px rgba(47, 39, 28, 0.16); }
   }
 }
 
+/* Article tables and MATLAB listings: keep technical material readable locally. */
+.prose .table-wrap {
+  margin: 30px 0;
+  padding: 1px;
+  border-radius: 22px;
+  background: linear-gradient(135deg, rgba(201, 137, 63, 0.3), rgba(13, 71, 70, 0.16));
+  box-shadow: 0 18px 42px rgba(47, 39, 28, 0.1);
+}
+.prose table {
+  border-collapse: separate;
+  border-spacing: 0;
+  min-width: 680px;
+  overflow: hidden;
+  border-radius: 21px;
+  background: rgba(255, 253, 248, 0.94);
+}
+.prose th,
+.prose td {
+  border: 0;
+  border-right: 1px solid rgba(13, 71, 70, 0.1);
+  border-bottom: 1px solid rgba(13, 71, 70, 0.1);
+}
+.prose th:last-child,
+.prose td:last-child { border-right: 0; }
+.prose tbody tr:last-child td { border-bottom: 0; }
+.prose th {
+  color: #f8edda;
+  background: linear-gradient(135deg, #0b4544, #1f6b66);
+  font-weight: 900;
+}
+.prose tbody tr:nth-child(even) td { background: rgba(13, 71, 70, 0.035); }
+.prose tbody tr:hover td { background: rgba(201, 137, 63, 0.08); }
+.prose pre {
+  position: relative;
+  margin: 30px 0;
+  padding: 24px 26px;
+  border: 1px solid rgba(180, 221, 205, 0.1);
+  border-radius: 22px;
+  color: #f3ead7;
+  background:
+    radial-gradient(circle at 12% 0%, rgba(135, 182, 162, 0.12), transparent 18rem),
+    linear-gradient(145deg, #082f30, #104748);
+}
+.prose pre code {
+  display: block;
+  min-width: max-content;
+  color: #f3ead7;
+  font-size: 15px;
+  line-height: 1.55;
+  tab-size: 4;
+}
+.code-comment { color: #8bcfa4; font-style: italic; }
+.code-keyword { color: #ffd37a; font-weight: 800; }
+.code-function { color: #8fd7ff; }
+.code-number { color: #f2a46f; }
+.code-string { color: #d9ea8a; }
+.code-operator { color: #b8d2cf; }
+
 /* Reading mode: collapsible table of contents for centered, immersive chapters. */
 .toc-toggle {
   position: absolute;
