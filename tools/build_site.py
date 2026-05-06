@@ -42,7 +42,7 @@ CHAPTER_DESCRIPTIONS = {
 INTRO = "一本从直觉出发的雷达信号处理入门教程。"
 GITHUB_URL = "https://github.com/apple-art/easy-radar-tutorial"
 SITE_URL = "https://apple-art.github.io/easy-radar-tutorial/"
-ASSET_VERSION = "20260506-table-code-fix"
+ASSET_VERSION = "20260506-code-font-fix"
 DEFAULT_SOURCE_DIR = Path(r"D:\Obsidian\唐承乾的笔记本\雷达教材\知乎版\系列文章")
 PROMO_CUTOFF_MARKERS = (
     "相关资料放在了公众号",
@@ -1952,11 +1952,16 @@ figure img { box-shadow: 0 22px 58px rgba(47, 39, 28, 0.16); }
   display: block;
   min-width: max-content;
   color: #f3ead7;
+  font-family: "Cascadia Mono", "Cascadia Code", "Consolas", "Microsoft YaHei UI", "Microsoft YaHei", monospace;
   font-size: 15px;
+  font-weight: 600;
   line-height: 1.55;
+  font-synthesis: none;
+  font-variant-ligatures: none;
   tab-size: 4;
 }
-.code-comment { color: #8bcfa4; font-style: italic; }
+.prose pre code * { font-family: inherit; }
+.code-comment { color: #9edfb4; font-style: normal; font-weight: 500; }
 .code-keyword { color: #ffd37a; font-weight: 800; }
 .code-function { color: #8fd7ff; }
 .code-number { color: #f2a46f; }
