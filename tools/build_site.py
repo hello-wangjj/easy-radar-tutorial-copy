@@ -538,16 +538,28 @@ class SiteBuilder:
             (self.chapter_out / f"{chapter['slug']}.html").write_text(self.render_chapter(chapter, renderer), encoding="utf-8")
 
     def render_index(self) -> str:
+        card_images = {
+            "ch01": "design/chapter-cards/ch01-card-refined.png",
+            "ch02": "design/chapter-cards/ch02-card-refined.png",
+            "ch03": "design/chapter-cards/ch03-card-refined.png",
+            "ch04": "design/chapter-cards/ch04-card-transparent.png",
+            "ch05": "design/chapter-cards/ch05-card-transparent.png",
+            "ch06": "design/chapter-cards/ch06-card-transparent.png",
+            "ch07": "design/chapter-cards/ch07-card-transparent.png",
+            "ch08": "design/chapter-cards/ch08-card-transparent.png",
+        }
         cards = []
         for chapter in self.chapters:
             actions = [f'<a class="btn primary" href="{html_attr(url_path(chapter["href"]))}">网页阅读</a>']
             if chapter.get("pdf"):
                 actions.append(f'<a class="btn" href="{html_attr(url_path(chapter["pdf"]))}">阅读 PDF</a>')
+            image = card_images.get(chapter["slug"], "")
+            figure = f'<figure class="chapter-art"><img src="{html_attr(image)}" alt="{html_attr(chapter["title"])}" loading="lazy"></figure>' if image else ""
             cards.append(
                 f"""<article class="chapter-card reveal">
       <div class="chapter-kicker"><span>{chapter["label"]}</span></div>
       <h3>{html.escape(chapter["title"])}</h3>
-      <p>{html.escape(CHAPTER_DESCRIPTIONS.get(chapter["slug"], ""))}</p>
+      {figure}
       <div class="chapter-actions">{''.join(actions)}</div>
     </article>"""
             )
@@ -560,15 +572,30 @@ class SiteBuilder:
   <div class="hero-shell reveal">
     <div class="hero-banner">
       <div class="hero-art" aria-hidden="true"></div>
+      <div class="hero-hud" aria-hidden="true">
+        <div class="radar-scope">
+          <span class="degree d0">0°</span><span class="degree d90">90°</span><span class="degree d180">180°</span><span class="degree d270">270°</span>
+          <i class="sweep"></i><i class="blip b1"></i><i class="blip b2"></i><i class="blip b3"></i>
+        </div>
+        <div class="telemetry"><span>方位角 <strong>32.6°</strong></span><span>距离 <strong>12.4 km</strong></span><span>速度 <strong>-18.7 m/s</strong></span></div>
+      </div>
+      <div class="hero-process" aria-label="雷达信号处理流程">
+        <div><span class="process-icon target"></span><strong>目标</strong></div><i></i>
+        <div><span class="process-icon tx"></span><strong>发射信号</strong></div><i></i>
+        <div><span class="process-icon rx"></span><strong>回波信号</strong></div><i></i>
+        <div><span class="process-icon matched"></span><strong>匹配滤波</strong></div><i></i>
+        <div><span class="process-icon spectrum"></span><strong>距离谱</strong></div><i></i>
+        <div><span class="process-icon detection"></span><strong>检测与估计</strong></div>
+      </div>
       <div class="hero-copy">
-        <div class="hero-mark"><img src="design/icon-concepts/logo-mark-light.svg" alt="项目图标"><span class="eyebrow">Radar signal processing</span></div>
+        <div class="hero-mark"><img src="design/icon-concepts/logo-mark-light.svg" alt="项目图标"><span class="eyebrow">从原理到实践 · 真正易懂的雷达信号处理</span></div>
         <h1>易懂的雷达信号处理教程</h1>
         <p>面向学生与工程师</p>
-        <div class="hero-actions"><a class="btn primary" href="chapters/ch01.html">开始阅读</a><a class="btn" href="#chapters">选择章节</a><a class="btn ghost" href="{html_attr(github_tree_url('matlab'))}">MATLAB 代码</a><a class="btn" href="{html_attr(GITHUB_URL + '/releases/latest')}">下载资料包</a></div>
+        <div class="hero-actions"><a class="btn primary" href="chapters/ch01.html"><span>开始阅读</span></a><a class="btn" href="#chapters"><span>浏览章节</span></a><a class="btn ghost" href="{html_attr(github_tree_url('matlab'))}"><span>MATLAB 代码</span></a><a class="btn" href="{html_attr(GITHUB_URL + '/releases/latest')}"><span>下载资料包</span></a></div>
         <div class="hero-proof" aria-label="教程概览">
-          <span><strong>8</strong> 个章节</span>
-          <span><strong>{sum(len(c["sections"]) for c in self.chapters)}</strong> 个小节</span>
-          <span><strong>{len(self.matlab_files_by_name)}</strong> 个脚本</span>
+          <div class="hero-stat"><strong>8</strong><span>个章节</span></div>
+          <div class="hero-stat"><strong>{sum(len(c["sections"]) for c in self.chapters)}</strong><span>个小节</span></div>
+          <div class="hero-stat"><strong>{len(self.matlab_files_by_name)}</strong><span>个脚本</span></div>
         </div>
       </div>
     </div>
