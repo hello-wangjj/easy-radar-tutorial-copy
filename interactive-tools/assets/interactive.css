@@ -1,0 +1,934 @@
+
+:root {
+  --ink: #17211d;
+  --muted: #64746d;
+  --paper: #f6efe3;
+  --paper-2: #fbf7ef;
+  --card: rgba(255, 253, 248, 0.86);
+  --card-strong: #fffdf8;
+  --teal: #0d4746;
+  --teal-2: #1e6b68;
+  --sage: #87b6a2;
+  --brass: #c9893f;
+  --copper: #9b5834;
+  --rose: #b65f4a;
+  --line: rgba(23, 33, 29, 0.13);
+  --shadow: 0 24px 72px rgba(47, 39, 28, 0.14);
+  --mono: "Cascadia Code", "Fira Code", Consolas, monospace;
+  --serif: "Noto Serif SC", "Source Han Serif SC", "Songti SC", SimSun, serif;
+  --sans: "LXGW WenKai Screen", "HarmonyOS Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; background: var(--paper); }
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--ink);
+  font-family: var(--serif);
+  background:
+    radial-gradient(circle at 10% 4%, rgba(201, 137, 63, 0.22), transparent 28rem),
+    radial-gradient(circle at 88% 10%, rgba(30, 107, 104, 0.18), transparent 30rem),
+    linear-gradient(135deg, #fbf7ef 0%, #f6efe3 50%, #edf3ea 100%);
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(13, 71, 70, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(13, 71, 70, 0.035) 1px, transparent 1px),
+    radial-gradient(circle at 12% 84%, rgba(135, 182, 162, 0.22), transparent 28rem);
+  background-size: 52px 52px, 52px 52px, auto;
+}
+a { color: inherit; text-decoration: none; }
+button, input { font: inherit; }
+.topbar {
+  width: min(1200px, calc(100% - 34px));
+  margin: 16px auto 0;
+  padding: 10px 12px 10px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.74);
+  border-radius: 999px;
+  background: rgba(255, 253, 248, 0.76);
+  box-shadow: 0 18px 48px rgba(47, 39, 28, 0.08);
+  backdrop-filter: blur(18px);
+}
+.brand { display: inline-flex; align-items: center; gap: 10px; color: #18332f; font-family: var(--sans); font-weight: 900; }
+.brand-mark {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 64% 38%, var(--brass) 0 8%, transparent 9%), radial-gradient(circle, transparent 0 38%, rgba(255,255,255,.9) 39% 42%, transparent 43%), linear-gradient(135deg, var(--teal), var(--teal-2));
+  box-shadow: 0 10px 20px rgba(13, 71, 70, 0.18);
+}
+.toplinks { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; color: #50615a; font-family: var(--sans); font-size: 14px; font-weight: 800; }
+.toplinks a { padding: 8px 11px; border-radius: 999px; }
+.toplinks a:hover { color: var(--teal); background: rgba(13, 71, 70, 0.08); }
+.hero, main, .footer { width: min(1200px, calc(100% - 34px)); margin: 0 auto; }
+.hero { padding: 58px 0 26px; }
+.eyebrow { margin: 0 0 12px; color: var(--copper); font-family: var(--sans); font-size: 12px; font-weight: 900; letter-spacing: .22em; text-transform: uppercase; }
+h1 { margin: 0; max-width: 980px; font-size: clamp(42px, 8vw, 92px); line-height: 1.02; letter-spacing: -0.065em; text-wrap: balance; }
+.lead { max-width: 840px; margin: 22px 0 0; color: #4e6059; font-size: clamp(19px, 2.2vw, 28px); line-height: 1.62; letter-spacing: -0.02em; }
+.hero-actions, .tool-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 11px 17px;
+  border: 1px solid rgba(23, 33, 29, 0.14);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.7);
+  color: #24413b;
+  box-shadow: 0 10px 24px rgba(47, 39, 28, 0.08);
+  font-family: var(--sans);
+  font-size: 15px;
+  font-weight: 900;
+  cursor: pointer;
+  transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+}
+.btn:hover { transform: translateY(-2px); background: #fff; box-shadow: 0 16px 34px rgba(47, 39, 28, 0.14); }
+.btn.primary { color: #fffaf1; border-color: transparent; background: linear-gradient(135deg, #0d4746, #1e6b68); }
+.layout { display: grid; grid-template-columns: 340px minmax(0, 1fr); gap: 18px; align-items: start; margin: 22px auto 56px; }
+.panel, .plot-card, .note-card, .tool-card {
+  border: 1px solid rgba(255,255,255,.78);
+  border-radius: 28px;
+  background: var(--card);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(18px);
+}
+.panel { position: sticky; top: 16px; padding: 22px; }
+.panel h2, .plot-card h2, .note-card h2 { margin: 0 0 14px; font-size: 24px; letter-spacing: -0.035em; }
+.control { padding: 15px 0; border-top: 1px solid var(--line); }
+.control:first-of-type { border-top: 0; }
+.control label { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 10px; color: #314640; font-family: var(--sans); font-weight: 900; }
+.control output { color: var(--copper); font-family: var(--mono); font-size: 13px; }
+input[type="range"] { width: 100%; accent-color: var(--teal); }
+.mini-readout { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 16px; }
+.readout { padding: 12px; border: 1px solid var(--line); border-radius: 18px; background: rgba(255,255,255,.58); }
+.readout span { display: block; color: var(--muted); font-family: var(--sans); font-size: 12px; font-weight: 800; }
+.readout strong { display: block; margin-top: 4px; color: var(--teal); font-family: var(--mono); font-size: 18px; }
+.stage { display: grid; gap: 18px; }
+.plot-card { padding: 18px; overflow: hidden; }
+.canvas-wrap { position: relative; min-height: 270px; border: 1px solid var(--line); border-radius: 22px; background: linear-gradient(180deg, rgba(255,255,255,.7), rgba(246,239,227,.52)); overflow: hidden; }
+canvas { display: block; width: 100%; height: 300px; }
+canvas.tall { height: 420px; }
+.note-card { padding: 22px; }
+.note-card p, .note-card li { color: #50615a; line-height: 1.8; }
+.note-card ul { margin: 8px 0 0; padding-left: 1.25em; }
+.formula { display: inline-block; padding: 2px 8px; border-radius: 999px; background: rgba(13,71,70,.08); color: var(--teal); font-family: var(--mono); font-size: .92em; }
+.tool-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; margin: 26px 0 60px; }
+.tool-card { position: relative; min-height: 270px; padding: 24px; overflow: hidden; }
+.tool-card::after { content: ""; position: absolute; right: -50px; bottom: -60px; width: 190px; height: 190px; border-radius: 50%; background: repeating-radial-gradient(circle, rgba(13,71,70,.16) 0 2px, transparent 2px 22px); opacity: .8; }
+.tool-card h2 { margin: 8px 0 10px; font-size: 30px; letter-spacing: -0.045em; }
+.tool-card p { max-width: 520px; color: var(--muted); line-height: 1.75; }
+.badge { display: inline-flex; padding: 6px 10px; border-radius: 999px; background: rgba(201,137,63,.14); color: var(--copper); font-family: var(--sans); font-size: 12px; font-weight: 900; }
+.footer { padding: 16px 0 36px; color: var(--muted); font-family: var(--sans); }
+@media (max-width: 900px) {
+  .topbar { align-items: flex-start; border-radius: 24px; flex-direction: column; }
+  .layout { grid-template-columns: 1fr; }
+  .panel { position: relative; top: auto; }
+  .tool-grid { grid-template-columns: 1fr; }
+  canvas, canvas.tall { height: 300px; }
+}
+@media (max-width: 540px) {
+  .hero, main, .footer, .topbar { width: min(100% - 22px, 1200px); }
+  .hero { padding-top: 38px; }
+  h1 { font-size: clamp(38px, 15vw, 58px); }
+  .mini-readout { grid-template-columns: 1fr; }
+  .panel, .plot-card, .note-card, .tool-card { border-radius: 22px; }
+}
+
+
+/* Integrated radar lab */
+.lab-hero { padding-bottom: 18px; }
+.lab-main { width: min(1320px, calc(100% - 34px)); margin: 0 auto 64px; }
+.lab-board { display: grid; grid-template-columns: minmax(0, 1.35fr) 380px; gap: 18px; align-items: start; }
+.lab-scene-card,
+.lab-control-card {
+  border: 1px solid rgba(255,255,255,.78);
+  border-radius: 30px;
+  background: var(--card);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(18px);
+}
+.lab-scene-card { padding: 20px; overflow: hidden; }
+.lab-control-card { position: sticky; top: 16px; padding: 20px; max-height: calc(100vh - 32px); overflow: auto; }
+.lab-card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; margin-bottom: 12px; }
+.lab-card-head h2 { margin: 4px 0 0; font-size: 28px; letter-spacing: -0.04em; }
+.lab-control-card h3 { margin: 18px 0 6px; color: #314640; font-family: var(--sans); font-size: 14px; letter-spacing: .14em; text-transform: uppercase; }
+.scenario-row { display: flex; flex-wrap: wrap; gap: 8px; padding: 10px; border: 1px solid var(--line); border-radius: 22px; background: rgba(255,255,255,.42); }
+.chip,
+.scene-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 34px;
+  padding: 7px 11px;
+  border: 1px solid rgba(13,71,70,.12);
+  border-radius: 999px;
+  background: rgba(255,255,255,.72);
+  color: #35504a;
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 900;
+}
+.chip { cursor: pointer; }
+.chip.active,
+.chip:hover { color: #fffaf1; border-color: transparent; background: linear-gradient(135deg, var(--teal), var(--teal-2)); }
+.scene-pill { white-space: nowrap; color: #fffaf1; background: linear-gradient(135deg, var(--teal), var(--teal-2)); }
+.scene-pill.miss { background: linear-gradient(135deg, var(--rose), var(--copper)); }
+.scene-svg { display: block; width: 100%; min-height: 440px; border: 1px solid var(--line); border-radius: 26px; background: linear-gradient(180deg, rgba(255,255,255,.68), rgba(237,243,234,.56)); touch-action: none; }
+.scene-bg { fill: url(#radarGlow); opacity: .18; }
+.range-ring,
+.az-line { fill: none; stroke: rgba(13,71,70,.18); stroke-width: 1.2; }
+.az-line { stroke-dasharray: 5 8; opacity: .8; }
+.beam-wedge { fill: url(#beamFill); stroke: rgba(201,137,63,.44); stroke-width: 1.5; }
+.los-line { stroke: rgba(13,71,70,.52); stroke-width: 2; stroke-dasharray: 7 8; }
+.radar-glow { fill: rgba(13,71,70,.12); stroke: rgba(13,71,70,.18); }
+.radar-dot { fill: #0d4746; stroke: rgba(255,253,248,.95); stroke-width: 4; }
+.radar-mark { fill: #fffaf1; opacity: .92; }
+.radar-node text,
+.scene-label,
+.target-group text { fill: #314640; font-family: "Microsoft YaHei", sans-serif; font-size: 13px; font-weight: 800; }
+.target-group { cursor: grab; outline: none; }
+.target-group:active { cursor: grabbing; }
+.target-halo { fill: rgba(201,137,63,.2); stroke: rgba(201,137,63,.38); stroke-width: 2; }
+.target-dot { fill: #b65f4a; stroke: #fffaf1; stroke-width: 4; filter: drop-shadow(0 8px 14px rgba(182,95,74,.26)); }
+.velocity-arrow { stroke: #b65f4a; stroke-width: 4; stroke-linecap: round; }
+.scene-hint { margin: 12px 4px 0; color: var(--muted); font-family: var(--sans); line-height: 1.7; }
+.metric-strip { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; margin: 18px 0; }
+.metric { padding: 14px; border: 1px solid rgba(255,255,255,.78); border-radius: 22px; background: rgba(255,253,248,.78); box-shadow: 0 14px 34px rgba(47,39,28,.08); }
+.metric span { display: block; color: var(--muted); font-family: var(--sans); font-size: 12px; font-weight: 900; }
+.metric strong { display: block; margin-top: 5px; color: var(--teal); font-family: var(--mono); font-size: clamp(15px, 1.5vw, 21px); }
+.pipeline { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 18px 0; padding: 12px; border: 1px solid rgba(255,255,255,.76); border-radius: 999px; background: rgba(255,253,248,.7); box-shadow: 0 14px 34px rgba(47,39,28,.08); }
+.pipeline span { padding: 8px 12px; border-radius: 999px; background: rgba(13,71,70,.08); color: #24413b; font-family: var(--sans); font-size: 13px; font-weight: 900; }
+.pipeline i { flex: 1 1 22px; min-width: 18px; height: 2px; background: linear-gradient(90deg, rgba(13,71,70,.18), rgba(201,137,63,.48)); }
+.lab-plot-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.lab-note { margin-top: 18px; }
+@media (max-width: 1100px) {
+  .lab-board { grid-template-columns: 1fr; }
+  .lab-control-card { position: relative; top: auto; max-height: none; }
+  .metric-strip { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 760px) {
+  .lab-main { width: min(100% - 22px, 1320px); }
+  .scene-svg { min-height: 330px; }
+  .lab-plot-grid { grid-template-columns: 1fr; }
+  .metric-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .pipeline { border-radius: 26px; }
+  .pipeline i { display: none; }
+}
+@media (max-width: 520px) {
+  .metric-strip { grid-template-columns: 1fr; }
+  .lab-scene-card, .lab-control-card { border-radius: 22px; padding: 14px; }
+}
+
+.tool-card.lab-feature { grid-column: 1 / -1; min-height: 230px; background: linear-gradient(135deg, rgba(255,253,248,.9), rgba(237,243,234,.76)); }
+.tool-card.lab-feature h2 { font-size: clamp(34px, 5vw, 58px); }
+
+
+/* Radar lab split-workbench layout */
+.radar-lab-page .topbar { width: min(1440px, calc(100% - 28px)); margin-top: 12px; }
+.radar-lab-page .lab-hero {
+  width: min(1440px, calc(100% - 28px));
+  padding: 30px 0 18px;
+}
+.radar-lab-page .lab-hero h1 { max-width: 1060px; font-size: clamp(42px, 6.2vw, 82px); }
+.radar-lab-page .lab-hero .lead { max-width: 920px; margin-top: 14px; font-size: clamp(17px, 1.65vw, 24px); line-height: 1.55; }
+.radar-lab-page .lab-main { width: min(1440px, calc(100% - 28px)); }
+.lab-split {
+  display: grid;
+  grid-template-columns: minmax(440px, .9fr) minmax(660px, 1.1fr);
+  gap: 16px;
+  align-items: start;
+  margin: 0 auto 42px;
+}
+.lab-left,
+.lab-right { min-width: 0; }
+.lab-left {
+  display: grid;
+  gap: 14px;
+  position: sticky;
+  top: 88px;
+  max-height: calc(100vh - 104px);
+  overflow: auto;
+  padding: 0 2px 4px 0;
+}
+.lab-right {
+  display: grid;
+  gap: 12px;
+  position: sticky;
+  top: 88px;
+  max-height: calc(100vh - 104px);
+  overflow: auto;
+  padding: 0 2px 4px 0;
+}
+.radar-lab-page .lab-scene-card,
+.radar-lab-page .lab-control-card { border-radius: 24px; }
+.radar-lab-page .lab-scene-card { padding: 16px; }
+.radar-lab-page .lab-control-card { position: static; max-height: none; padding: 16px; }
+.radar-lab-page .lab-card-head { margin-bottom: 8px; }
+.radar-lab-page .lab-card-head h2 { font-size: 24px; }
+.radar-lab-page .scene-svg { min-height: 0; height: clamp(340px, 38vh, 430px); }
+.radar-lab-page .scene-hint { margin-top: 8px; font-size: 13px; }
+.radar-lab-page .scenario-row { padding: 8px; gap: 6px; }
+.radar-lab-page .chip { min-height: 30px; padding: 6px 10px; font-size: 12px; }
+.radar-lab-page .lab-control-card h3 { margin: 14px 0 4px; }
+.radar-lab-page .lab-control-card .control { padding: 9px 0; }
+.radar-lab-page .lab-control-card .control label { margin-bottom: 6px; font-size: 14px; }
+.radar-lab-page .metric-strip { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; margin: 0; }
+.radar-lab-page .metric { padding: 10px; border-radius: 18px; }
+.radar-lab-page .metric span { font-size: 11px; }
+.radar-lab-page .metric strong { font-size: clamp(13px, 1.15vw, 17px); }
+.radar-lab-page .pipeline { margin: 0; padding: 9px; border-radius: 24px; gap: 7px; }
+.radar-lab-page .pipeline span { padding: 7px 10px; font-size: 12px; }
+.radar-lab-page .lab-plot-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.radar-lab-page .plot-card { padding: 12px; border-radius: 22px; }
+.radar-lab-page .plot-card h2 { margin-bottom: 8px; font-size: 18px; line-height: 1.3; letter-spacing: -0.03em; }
+.radar-lab-page .canvas-wrap { min-height: 0; border-radius: 18px; }
+.radar-lab-page .canvas-wrap canvas { height: clamp(155px, 20vh, 220px); }
+.radar-lab-page .canvas-wrap canvas.tall { height: clamp(170px, 22vh, 240px); }
+.radar-lab-page .lab-note { margin-top: 0; padding: 16px 18px; }
+.radar-lab-page .lab-note h2 { font-size: 22px; }
+.radar-lab-page .lab-note ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px 18px; }
+.radar-lab-page .lab-note li { line-height: 1.65; font-size: 14px; }
+@media (max-width: 1180px) {
+  .lab-split { grid-template-columns: 1fr; }
+  .lab-left,
+  .lab-right { position: relative; top: auto; max-height: none; overflow: visible; }
+  .radar-lab-page .metric-strip { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .radar-lab-page .scene-svg { height: 430px; }
+}
+@media (max-width: 760px) {
+  .radar-lab-page .lab-main,
+  .radar-lab-page .lab-hero,
+  .radar-lab-page .topbar { width: min(100% - 22px, 1440px); }
+  .radar-lab-page .lab-hero { padding-top: 24px; }
+  .radar-lab-page .lab-hero h1 { font-size: clamp(36px, 12vw, 58px); }
+  .radar-lab-page .metric-strip,
+  .radar-lab-page .lab-plot-grid,
+  .radar-lab-page .lab-note ul { grid-template-columns: 1fr; }
+  .radar-lab-page .canvas-wrap canvas,
+  .radar-lab-page .canvas-wrap canvas.tall { height: 270px; }
+}
+
+
+/* Make radar lab feel like an always-visible workbench instead of a landing page. */
+.radar-lab-page .lab-hero { padding: 18px 0 14px; display: grid; grid-template-columns: minmax(360px, .95fr) minmax(420px, 1.05fr); gap: 18px; align-items: end; }
+.radar-lab-page .lab-hero .eyebrow { grid-column: 1 / -1; margin-bottom: 0; }
+.radar-lab-page .lab-hero h1 { max-width: 680px; font-size: clamp(34px, 4.1vw, 56px); line-height: 1.05; }
+.radar-lab-page .lab-hero .lead { max-width: 720px; margin: 0; font-size: clamp(15px, 1.25vw, 19px); line-height: 1.65; }
+@media (max-width: 900px) {
+  .radar-lab-page .lab-hero { display: block; }
+  .radar-lab-page .lab-hero .lead { margin-top: 12px; }
+}
+
+
+/* Desktop app-shell pass: keep left scene and right charts visible together. */
+@media (min-width: 1181px) {
+  body.radar-lab-page { height: 100vh; overflow: hidden; }
+  .radar-lab-page .topbar { height: 58px; margin-top: 10px; }
+  .radar-lab-page .lab-hero {
+    height: 118px;
+    padding: 14px 0 12px;
+    grid-template-columns: minmax(420px, .8fr) minmax(520px, 1.2fr);
+    align-items: center;
+  }
+  .radar-lab-page .lab-hero .eyebrow { grid-column: 1 / 2; align-self: end; }
+  .radar-lab-page .lab-hero h1 { grid-column: 1 / 2; font-size: clamp(34px, 3.6vw, 50px); }
+  .radar-lab-page .lab-hero .lead { grid-column: 2 / 3; grid-row: 1 / span 2; font-size: 16px; line-height: 1.65; }
+  .radar-lab-page .lab-main { height: calc(100vh - 198px); }
+  .lab-split { height: 100%; margin-bottom: 0; }
+  .lab-left,
+  .lab-right {
+    position: static;
+    max-height: none;
+    height: 100%;
+    overflow: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+  }
+  .radar-lab-page .scene-svg { height: clamp(315px, 40vh, 390px); }
+  .radar-lab-page .canvas-wrap canvas { height: clamp(148px, 18.5vh, 200px); }
+  .radar-lab-page .canvas-wrap canvas.tall { height: clamp(160px, 19.5vh, 214px); }
+  .radar-lab-page .footer { display: none; }
+}
+
+@media (min-width: 1181px) { .radar-lab-page .lab-hero h1 { white-space: nowrap; font-size: clamp(34px, 3.8vw, 54px); } }
+
+
+/* Guided radar lab: one question at a time. */
+.guided-lab-page .topbar { width: min(1440px, calc(100% - 28px)); margin-top: 10px; }
+.guided-lab-page .guided-hero {
+  width: min(1440px, calc(100% - 28px));
+  margin: 0 auto;
+  padding: 18px 0 14px;
+  display: grid;
+  grid-template-columns: minmax(340px, .72fr) minmax(520px, 1.28fr);
+  gap: 20px;
+  align-items: center;
+}
+.guided-lab-page .guided-hero .eyebrow { grid-column: 1 / -1; margin: 0; }
+.guided-lab-page .guided-hero h1 { margin: 0; font-size: clamp(34px, 4vw, 56px); white-space: nowrap; }
+.guided-lab-page .guided-hero .lead { margin: 0; max-width: 760px; font-size: clamp(16px, 1.25vw, 19px); line-height: 1.65; }
+.guided-shell {
+  width: min(1440px, calc(100% - 28px));
+  margin: 0 auto 38px;
+  display: grid;
+  grid-template-columns: minmax(420px, .82fr) minmax(720px, 1.18fr);
+  gap: 16px;
+  align-items: stretch;
+}
+.guided-left,
+.guided-right { min-width: 0; display: grid; gap: 14px; align-content: start; }
+.guided-scene-card,
+.guided-control-card,
+.task-card { border-radius: 24px; }
+.guided-scene-card { padding: 16px; }
+.guided-scene-card .lab-card-head { margin-bottom: 8px; }
+.guided-scene-card .lab-card-head h2,
+.guided-control-card .lab-card-head h2 { font-size: 24px; }
+.guided-lab-page .scene-svg { height: clamp(340px, 42vh, 430px); min-height: 0; }
+.guided-lab-page .scene-hint { margin-top: 8px; font-size: 13px; line-height: 1.65; }
+.guided-control-card { padding: 16px; }
+.guided-control-card .control { padding: 10px 0; }
+.guided-control-card .control label { margin-bottom: 6px; font-size: 14px; }
+.compact-scenarios { margin-top: 12px; padding: 8px; gap: 6px; }
+.compact-scenarios .chip { min-height: 30px; padding: 6px 10px; font-size: 12px; }
+.advanced-controls { margin-top: 12px; border: 1px solid var(--line); border-radius: 20px; background: rgba(255,255,255,.45); overflow: hidden; }
+.advanced-controls summary { cursor: pointer; padding: 12px 14px; color: #35504a; font-family: var(--sans); font-size: 13px; font-weight: 900; }
+.advanced-controls .control { margin: 0 14px; }
+.guided-right { grid-template-rows: auto auto minmax(0, 1fr) auto; }
+.task-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, .58fr);
+  gap: 14px;
+  padding: 18px;
+  border: 1px solid rgba(255,255,255,.78);
+  background: linear-gradient(135deg, rgba(255,253,248,.9), rgba(237,243,234,.72));
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(18px);
+}
+.task-card h2 { margin: 4px 0 8px; font-size: clamp(26px, 2.6vw, 42px); line-height: 1.1; letter-spacing: -0.045em; }
+.task-card p { margin: 0; color: var(--muted); font-size: 17px; line-height: 1.7; }
+.task-tip { align-self: stretch; display: flex; align-items: center; padding: 14px 16px; border: 1px solid rgba(201,137,63,.24); border-radius: 20px; background: rgba(201,137,63,.12); color: #7c482e; font-family: var(--sans); font-weight: 900; line-height: 1.6; }
+.guided-metrics { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; margin: 0; }
+.guided-metrics .metric { padding: 10px 11px; border-radius: 18px; }
+.guided-metrics .metric span { font-size: 11px; }
+.guided-metrics .metric strong { font-size: clamp(13px, 1.12vw, 17px); }
+.quiet-metric { opacity: .72; }
+.focus-plot-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: minmax(330px, 1fr) minmax(210px, .58fr); gap: 12px; min-height: 0; }
+.focus-card { position: relative; padding: 12px; border-radius: 22px; transition: transform .18s ease, box-shadow .18s ease, opacity .18s ease; }
+.focus-card.active-card { grid-column: 1 / -1; grid-row: 1; padding: 18px; box-shadow: var(--shadow); }
+.focus-card:not(.active-card) { grid-row: 2; opacity: .82; }
+.focus-card:not(.active-card):hover { opacity: 1; transform: translateY(-2px); }
+.focus-card h2 { margin: 4px 0 4px; font-size: 18px; line-height: 1.25; letter-spacing: -0.03em; }
+.focus-card p { margin: 0 0 8px; color: var(--muted); font-family: var(--sans); font-size: 13px; line-height: 1.55; }
+.focus-card.active-card h2 { font-size: clamp(28px, 2.6vw, 40px); }
+.focus-card.active-card p { font-size: 16px; }
+.plot-kicker { display: inline-flex; padding: 5px 9px; border-radius: 999px; background: rgba(13,71,70,.08); color: var(--teal); font-family: var(--sans); font-size: 12px; font-weight: 900; }
+.focus-card .canvas-wrap { min-height: 0; border-radius: 18px; }
+.focus-card canvas,
+.focus-card canvas.tall { height: 140px; }
+.focus-card.active-card canvas,
+.focus-card.active-card canvas.tall { height: clamp(235px, 31vh, 360px); }
+.lesson-steps {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  padding: 10px;
+  border: 1px solid rgba(255,255,255,.78);
+  border-radius: 26px;
+  background: rgba(255,253,248,.76);
+  box-shadow: 0 14px 34px rgba(47,39,28,.08);
+}
+.lesson-step {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-areas: "num title" "num sub";
+  column-gap: 10px;
+  align-items: center;
+  min-height: 58px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: rgba(255,255,255,.62);
+  color: #35504a;
+  cursor: pointer;
+  text-align: left;
+}
+.lesson-step span { grid-area: num; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: rgba(13,71,70,.1); color: var(--teal); font-family: var(--mono); font-weight: 900; }
+.lesson-step strong { grid-area: title; font-family: var(--sans); font-size: 15px; }
+.lesson-step small { grid-area: sub; color: var(--muted); font-family: var(--sans); font-size: 12px; }
+.lesson-step.active { border-color: transparent; background: linear-gradient(135deg, var(--teal), var(--teal-2)); color: #fffaf1; box-shadow: 0 12px 26px rgba(13,71,70,.16); }
+.lesson-step.active span { background: rgba(255,255,255,.18); color: #fffaf1; }
+.lesson-step.active small { color: rgba(255,250,241,.78); }
+@media (min-width: 1181px) {
+  body.guided-lab-page { height: 100vh; overflow: hidden; }
+  .guided-lab-page .topbar { height: 58px; }
+  .guided-lab-page .guided-hero { height: 112px; }
+  .guided-shell { height: calc(100vh - 198px); margin-bottom: 0; }
+  .guided-left,
+  .guided-right { max-height: 100%; overflow: auto; overscroll-behavior: contain; scrollbar-width: thin; }
+  .guided-lab-page .footer { display: none; }
+}
+@media (max-width: 1180px) {
+  .guided-lab-page .guided-hero { display: block; }
+  .guided-lab-page .guided-hero .lead { margin-top: 10px; }
+  .guided-shell { grid-template-columns: 1fr; }
+  .guided-metrics { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .focus-plot-grid { grid-template-rows: auto; }
+  .task-card { grid-template-columns: 1fr; }
+}
+@media (max-width: 760px) {
+  .guided-lab-page .topbar,
+  .guided-lab-page .guided-hero,
+  .guided-shell { width: min(100% - 22px, 1440px); }
+  .guided-lab-page .guided-hero h1 { white-space: normal; font-size: clamp(34px, 12vw, 56px); }
+  .guided-metrics,
+  .focus-plot-grid,
+  .lesson-steps { grid-template-columns: 1fr; }
+  .focus-card.active-card,
+  .focus-card:not(.active-card) { grid-column: auto; grid-row: auto; }
+  .focus-card canvas,
+  .focus-card canvas.tall,
+  .focus-card.active-card canvas,
+  .focus-card.active-card canvas.tall { height: 270px; }
+}
+
+
+/* Final guided-lab clarity pass: compact header, visible main chart plus previews. */
+@media (min-width: 1181px) {
+  body.guided-lab-page { height: 100vh; overflow: hidden; }
+  .guided-lab-page .topbar { height: 56px; margin-top: 8px; }
+  .guided-lab-page .guided-hero {
+    height: 74px;
+    padding: 8px 0 10px;
+    display: grid;
+    grid-template-columns: 330px minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    gap: 4px 26px;
+    align-items: center;
+  }
+  .guided-lab-page .guided-hero .eyebrow { grid-column: 1; grid-row: 1; align-self: end; }
+  .guided-lab-page .guided-hero h1 {
+    grid-column: 1;
+    grid-row: 2;
+    margin: 0;
+    font-size: 30px;
+    line-height: 1.05;
+    letter-spacing: -0.045em;
+    white-space: nowrap;
+  }
+  .guided-lab-page .guided-hero .lead {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    max-width: 760px;
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.55;
+  }
+  .guided-shell { height: calc(100vh - 152px); grid-template-columns: minmax(420px, .78fr) minmax(760px, 1.22fr); }
+  .guided-left,
+  .guided-right { max-height: 100%; overflow: auto; overscroll-behavior: contain; scrollbar-width: thin; }
+  .guided-lab-page .scene-svg { height: clamp(300px, 35vh, 365px); }
+  .task-card { padding: 14px 16px; grid-template-columns: minmax(0, 1fr) 270px; }
+  .task-card h2 { font-size: 32px; margin-bottom: 4px; }
+  .task-card p { font-size: 15px; line-height: 1.55; }
+  .task-tip { padding: 10px 13px; font-size: 14px; }
+  .guided-metrics .metric { padding: 8px 10px; }
+  .focus-plot-grid { grid-template-rows: minmax(300px, 1fr) 158px; gap: 10px; }
+  .focus-card.active-card { padding: 16px; }
+  .focus-card.active-card h2 { font-size: 32px; }
+  .focus-card.active-card p { font-size: 15px; margin-bottom: 6px; }
+  .focus-card.active-card canvas,
+  .focus-card.active-card canvas.tall { height: clamp(210px, 25vh, 280px); }
+  .focus-card:not(.active-card) { padding: 10px; }
+  .focus-card:not(.active-card) h2 { font-size: 18px; }
+  .focus-card:not(.active-card) p { display: none; }
+  .focus-card:not(.active-card) canvas,
+  .focus-card:not(.active-card) canvas.tall { height: 82px; }
+  .lesson-steps { padding: 8px; gap: 8px; }
+  .lesson-step { min-height: 54px; padding: 8px 10px; }
+  .lesson-step span { width: 30px; height: 30px; }
+}
+
+
+/* AI mockup reproduction pass: calm learning canvas, not an engineering dashboard. */
+body.guided-lab-page {
+  background:
+    radial-gradient(circle at 0% 0%, rgba(201,137,63,.18), transparent 25rem),
+    radial-gradient(circle at 100% 0%, rgba(135,182,162,.2), transparent 30rem),
+    linear-gradient(135deg, #fbf7ef 0%, #f4eadb 48%, #edf3ea 100%);
+}
+.guided-lab-page .lab-masthead {
+  width: min(1480px, calc(100% - 24px));
+  min-height: 78px;
+  margin-top: 12px;
+  padding: 12px 22px;
+  border-radius: 22px;
+}
+.guided-lab-page .brand { gap: 14px; }
+.guided-lab-page .brand-mark { width: 46px; height: 46px; }
+.brand-copy { display: grid; gap: 3px; }
+.brand-copy strong { font-size: 24px; line-height: 1.1; letter-spacing: -.02em; }
+.brand-copy small { color: var(--muted); font-size: 13px; font-weight: 800; }
+.guided-lab-page .toplinks { gap: 18px; font-size: 15px; }
+.guided-lab-page .guided-hero { display: none; }
+.guided-shell {
+  width: min(1480px, calc(100% - 24px));
+  margin: 12px auto 28px;
+  display: grid;
+  grid-template-columns: minmax(430px, .58fr) minmax(680px, 1fr);
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: 12px;
+}
+.guided-left { grid-column: 1; grid-row: 1; gap: 12px; min-width: 0; }
+.guided-right { grid-column: 2; grid-row: 1; gap: 12px; min-width: 0; }
+.full-lesson-steps { grid-column: 1 / -1; grid-row: 2; }
+.guided-scene-card,
+.guided-control-card,
+.task-card,
+.focus-card,
+.full-lesson-steps,
+.guided-metrics .metric {
+  border: 1px solid rgba(23,33,29,.12);
+  background: rgba(255,253,248,.72);
+  box-shadow: 0 18px 60px rgba(47,39,28,.08);
+}
+.guided-scene-card { padding: 22px; border-radius: 22px; }
+.guided-scene-card .lab-card-head { margin-bottom: 12px; }
+.guided-scene-card .lab-card-head h2 { font-size: 26px; }
+.guided-lab-page .scene-svg {
+  height: clamp(360px, 42vh, 455px);
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(255,255,255,.8), rgba(237,243,234,.6));
+}
+.guided-lab-page .scene-hint {
+  margin: 12px 0 0;
+  padding: 11px 14px;
+  border: 1px solid rgba(201,137,63,.22);
+  border-radius: 14px;
+  background: rgba(201,137,63,.09);
+  color: #744b31;
+  text-align: center;
+  font-family: var(--sans);
+  font-weight: 800;
+}
+.guided-control-card { padding: 18px 20px; border-radius: 18px; }
+.guided-control-card .lab-card-head { margin-bottom: 8px; }
+.guided-control-card .lab-card-head h2 { font-size: 22px; }
+.guided-control-card .control { padding: 10px 0; }
+.guided-control-card .control label { margin-bottom: 7px; }
+.compact-scenarios { margin-top: 10px; border-radius: 16px; background: rgba(255,255,255,.5); }
+.advanced-controls { border-radius: 16px; }
+.task-card {
+  grid-template-columns: minmax(0, 1fr) 300px;
+  padding: 18px;
+  border-radius: 22px;
+  background: linear-gradient(120deg, rgba(255,253,248,.84), rgba(237,243,234,.66));
+}
+.task-card h2 { font-size: clamp(32px, 3vw, 44px); }
+.task-card p { font-size: 16px; }
+.task-tip {
+  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(237,243,234,.9), rgba(246,239,227,.86));
+  color: #9b5834;
+  font-size: 15px;
+}
+.guided-metrics { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; }
+.guided-metrics .metric { border-radius: 16px; padding: 10px 12px; }
+.guided-metrics .metric strong { color: var(--teal); }
+.focus-plot-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: minmax(330px, 1fr) 210px;
+  gap: 12px;
+  min-height: 0;
+}
+.focus-card { border-radius: 20px; padding: 14px; overflow: hidden; cursor: pointer; }
+.focus-card.active-card {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  padding: 20px;
+  background: rgba(255,253,248,.82);
+}
+.focus-card:not(.active-card) { grid-row: 2; opacity: 1; }
+.focus-card.active-card h2 { font-size: clamp(30px, 2.8vw, 42px); }
+.focus-card.active-card p { font-size: 16px; color: var(--muted); }
+.focus-card:not(.active-card) h2 { font-size: 21px; }
+.focus-card:not(.active-card) p { font-size: 13px; display: block; }
+.focus-card .canvas-wrap { background: rgba(255,255,255,.62); border-radius: 14px; }
+.focus-card.active-card canvas,
+.focus-card.active-card canvas.tall { height: clamp(235px, 28vh, 330px); }
+.focus-card:not(.active-card) canvas,
+.focus-card:not(.active-card) canvas.tall { height: 118px; }
+.full-lesson-steps {
+  margin: 0;
+  padding: 16px 22px;
+  border-radius: 22px;
+  background: rgba(255,253,248,.72);
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 72px;
+  position: relative;
+}
+.full-lesson-steps::before {
+  content: "";
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  top: 50%;
+  height: 2px;
+  transform: translateY(-50%);
+  background: repeating-linear-gradient(90deg, rgba(13,71,70,.75) 0 9px, transparent 9px 18px);
+  pointer-events: none;
+}
+.full-lesson-steps .lesson-step {
+  position: relative;
+  z-index: 1;
+  min-height: 86px;
+  padding: 16px;
+  border-radius: 14px;
+  background: rgba(255,253,248,.9);
+}
+.full-lesson-steps .lesson-step.active { background: rgba(255,253,248,.95); border: 1px solid rgba(13,71,70,.6); color: var(--ink); box-shadow: 0 12px 30px rgba(13,71,70,.1); }
+.full-lesson-steps .lesson-step.active span { background: linear-gradient(135deg, var(--teal), var(--teal-2)); color: #fffaf1; }
+.full-lesson-steps .lesson-step.active small { color: var(--muted); }
+@media (min-width: 1181px) {
+  body.guided-lab-page { height: 100vh; overflow: hidden; }
+  .guided-shell { height: calc(100vh - 114px); }
+  .guided-left,
+  .guided-right { max-height: 100%; overflow: auto; overscroll-behavior: contain; scrollbar-width: thin; }
+  .guided-lab-page .footer { display: none; }
+}
+@media (max-width: 1180px) {
+  .guided-lab-page .lab-masthead { border-radius: 24px; }
+  .guided-shell { grid-template-columns: 1fr; grid-template-rows: auto; }
+  .guided-left, .guided-right, .full-lesson-steps { grid-column: auto; grid-row: auto; }
+  .guided-metrics { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .task-card { grid-template-columns: 1fr; }
+  .full-lesson-steps { gap: 10px; }
+  .full-lesson-steps::before { display: none; }
+}
+@media (max-width: 760px) {
+  .guided-lab-page .lab-masthead,
+  .guided-shell { width: min(100% - 22px, 1480px); }
+  .brand-copy strong { font-size: 18px; }
+  .brand-copy small { display: none; }
+  .guided-metrics, .focus-plot-grid, .full-lesson-steps { grid-template-columns: 1fr; }
+  .focus-card.active-card, .focus-card:not(.active-card) { grid-column: auto; grid-row: auto; }
+  .focus-card canvas, .focus-card canvas.tall, .focus-card.active-card canvas, .focus-card.active-card canvas.tall { height: 260px; }
+}
+
+
+/* Keep the full radar scene visible in the left teaching card. */
+@media (min-width: 1181px) {
+  .guided-lab-page .scene-svg { height: 280px; }
+  .guided-scene-card { padding: 18px; }
+  .guided-lab-page .scene-hint { padding: 9px 12px; }
+  .guided-control-card { padding: 16px 18px; }
+  .guided-control-card .control { padding: 8px 0; }
+}
+
+@media (min-width: 1181px) { .guided-scene-card { overflow: visible; } .guided-lab-page .scene-svg { height: 300px; } }
+
+
+/* Closer reproduction of the AI reference mockup. */
+.guided-lab-page .lab-masthead { min-height: 86px; padding: 12px 26px; border-radius: 18px; }
+.guided-lab-page .brand-mark {
+  width: 54px;
+  height: 54px;
+  background:
+    radial-gradient(circle at 62% 35%, #c9893f 0 7%, transparent 8%),
+    repeating-radial-gradient(circle, rgba(255,255,255,.42) 0 1px, transparent 1px 7px),
+    conic-gradient(from 40deg, rgba(201,137,63,.9) 0 8%, transparent 8% 100%),
+    linear-gradient(135deg, #0b5553, #0d4746);
+}
+.guided-lab-page .toplinks a::before { margin-right: 8px; opacity: .9; }
+.guided-lab-page .toplinks a:nth-child(1)::before { content: "□"; }
+.guided-lab-page .toplinks a:nth-child(2)::before { content: "▥"; }
+.guided-lab-page .toplinks a:nth-child(3)::before { content: "◌"; }
+.guided-lab-page .toplinks a:nth-child(4)::before { content: "⌂"; }
+.scene-legend {
+  position: absolute;
+  top: 86px;
+  right: 30px;
+  z-index: 3;
+  display: grid;
+  gap: 9px;
+  min-width: 112px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: rgba(255,253,248,.84);
+  box-shadow: 0 10px 26px rgba(47,39,28,.08);
+  font-family: var(--sans);
+  font-weight: 900;
+  color: #344b45;
+}
+.scene-legend span { display: flex; align-items: center; gap: 10px; }
+.legend-target { width: 14px; height: 14px; border-radius: 50%; background: #c46c18; box-shadow: inset 0 0 0 2px rgba(255,255,255,.7); }
+.legend-arrow { width: 24px; height: 2px; background: #0d5553; position: relative; }
+.legend-arrow::after { content: ""; position: absolute; right: -1px; top: -4px; border-left: 8px solid #0d5553; border-top: 5px solid transparent; border-bottom: 5px solid transparent; }
+.guided-lab-page .guided-scene-card { position: relative; }
+.guided-lab-page .scene-svg { background: radial-gradient(circle at 50% 64%, rgba(135,182,162,.18), transparent 38%), linear-gradient(180deg, rgba(255,255,255,.78), rgba(237,243,234,.58)); }
+.guided-control-card .lab-card-head h2 { display: none; }
+.guided-control-card .lab-card-head { margin-bottom: 4px; }
+@media (min-width: 1181px) {
+  .guided-shell { height: calc(100vh - 126px); grid-template-columns: minmax(480px, .58fr) minmax(760px, 1fr); gap: 12px; }
+  .guided-left { grid-template-rows: minmax(0, 1fr) auto; overflow: visible; }
+  .guided-right { overflow: visible; }
+  .guided-lab-page .guided-scene-card { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; min-height: 0; }
+  .guided-lab-page .scene-svg { height: auto; min-height: 0; align-self: stretch; }
+  .guided-control-card {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px 18px;
+    align-items: end;
+    padding: 18px 20px 14px;
+  }
+  .guided-control-card .lab-card-head { grid-column: 1 / -1; }
+  .guided-control-card .control { padding: 0; border-top: 0; border-right: 1px solid var(--line); padding-right: 18px; }
+  .guided-control-card .control:nth-of-type(3) { border-right: 0; padding-right: 0; }
+  .guided-control-card .control label { margin-bottom: 10px; }
+  .compact-scenarios { grid-column: 1 / -1; margin-top: 2px; }
+  .advanced-controls { grid-column: 1 / -1; margin-top: 0; }
+  .task-card { min-height: 150px; grid-template-columns: minmax(0,1fr) 310px; align-items: center; }
+  .task-card .eyebrow { color: var(--teal); letter-spacing: .12em; text-transform: none; font-size: 15px; }
+  .task-card h2 { font-size: 42px; }
+  .task-tip { display: flex; gap: 12px; align-items: flex-start; }
+  .task-tip .tip-icon { font-size: 24px; line-height: 1; }
+  .task-tip strong { color: #9b5834; }
+  .task-tip small { color: var(--muted); font-weight: 800; }
+  .guided-metrics { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .quiet-metric { display: none; }
+  .focus-plot-grid { grid-template-rows: minmax(280px, 1fr) 178px; }
+  .focus-card.active-card canvas, .focus-card.active-card canvas.tall { height: 205px; }
+  .focus-card:not(.active-card) canvas, .focus-card:not(.active-card) canvas.tall { height: 78px; }
+  .full-lesson-steps { min-height: 118px; align-items: center; padding: 16px 22px; }
+  .full-lesson-steps .steps-heading { position: absolute; left: 26px; top: 14px; font-family: var(--serif); font-weight: 900; font-size: 22px; }
+  .full-lesson-steps .lesson-step { margin-top: 24px; min-height: 76px; }
+}
+@media (max-width: 1180px) {
+  .scene-legend { position: static; width: max-content; margin: 0 0 10px auto; }
+  .full-lesson-steps .steps-heading { grid-column: 1 / -1; font-family: var(--serif); font-weight: 900; font-size: 22px; }
+}
+
+
+/* Fit pass against the AI mockup: bigger scene, no preview-card collision. */
+@media (min-width: 1181px) {
+  .guided-lab-page .scene-svg { height: 322px !important; align-self: auto; }
+  .guided-left { grid-template-rows: auto auto; }
+  .guided-right { overflow: hidden; }
+  .focus-plot-grid { grid-template-rows: 250px 145px; gap: 10px; }
+  .focus-card.active-card { padding: 16px 20px; }
+  .focus-card.active-card h2 { font-size: 36px; }
+  .focus-card.active-card p { margin-bottom: 6px; }
+  .focus-card.active-card canvas, .focus-card.active-card canvas.tall { height: 154px; }
+  .focus-card:not(.active-card) { padding: 10px 14px; }
+  .focus-card:not(.active-card) h2 { font-size: 19px; }
+  .focus-card:not(.active-card) canvas, .focus-card:not(.active-card) canvas.tall { height: 54px; }
+  .full-lesson-steps { z-index: 2; }
+}
+
+
+/* Zoom the scene and reveal the preview charts like the AI reference. */
+@media (min-width: 1181px) {
+  .guided-lab-page .scene-svg { height: 285px !important; }
+  .focus-plot-grid { grid-template-rows: 220px 160px; }
+  .focus-card.active-card h2 { font-size: 34px; }
+  .focus-card.active-card canvas, .focus-card.active-card canvas.tall { height: 118px; }
+  .focus-card:not(.active-card) p { display: none; }
+  .focus-card:not(.active-card) canvas, .focus-card:not(.active-card) canvas.tall { height: 74px; }
+}
+
+
+/* Natural-flow reproduction: match the AI mockup instead of forcing an app viewport. */
+@media (min-width: 1181px) {
+  body.guided-lab-page { height: auto !important; min-height: 100vh; overflow: auto !important; }
+  .guided-shell { height: auto !important; min-height: 0; grid-template-rows: auto auto; align-items: start; }
+  .guided-left, .guided-right { max-height: none !important; height: auto !important; overflow: visible !important; }
+  .guided-lab-page .scene-svg { height: 430px !important; align-self: auto; }
+  .guided-lab-page .scene-hint { position: relative; z-index: 4; margin-top: 12px; }
+  .guided-control-card { min-height: 170px; }
+  .task-card { min-height: 146px; }
+  .focus-plot-grid { grid-template-rows: 280px 190px; }
+  .focus-card.active-card canvas, .focus-card.active-card canvas.tall { height: 172px; }
+  .focus-card:not(.active-card) canvas, .focus-card:not(.active-card) canvas.tall { height: 86px; }
+  .full-lesson-steps { margin-bottom: 16px; }
+}
+
+
+/* Fit the bottom learning path into a 16:10 desktop viewport. */
+@media (min-width: 1181px) {
+  .guided-lab-page .scene-svg { height: 350px !important; }
+  .guided-control-card { min-height: 145px; padding-top: 14px; padding-bottom: 12px; }
+  .guided-control-card .control label { margin-bottom: 6px; }
+  .compact-scenarios { padding: 6px; }
+  .advanced-controls summary { padding: 9px 12px; }
+}
+
+
+/* User simplification: remove top guidance block and preset chips, let charts carry the page. */
+.scene-legend, .task-card, .guided-metrics, .compact-scenarios { display: none !important; }
+@media (min-width: 1181px) {
+  .guided-shell { grid-template-columns: minmax(500px, .58fr) minmax(780px, 1fr); }
+  .guided-right { align-content: start; }
+  .focus-plot-grid { grid-template-rows: 390px 230px; gap: 12px; }
+  .focus-card.active-card { padding: 22px; }
+  .focus-card.active-card canvas, .focus-card.active-card canvas.tall { height: 250px; }
+  .focus-card:not(.active-card) canvas, .focus-card:not(.active-card) canvas.tall { height: 116px; }
+  .guided-lab-page .scene-svg { height: 430px !important; }
+  .guided-control-card { min-height: 130px; }
+}
+
+
+/* Give the distance-Doppler preview more room; tiny heatmaps are hard to read. */
+@media (min-width: 1181px) {
+  .focus-card[data-view="rdm"] {
+    grid-column: span 2;
+  }
+  .focus-card:not(.active-card)[data-view="rdm"] canvas,
+  .focus-card:not(.active-card)[data-view="rdm"] canvas.tall {
+    height: 132px;
+  }
+  .focus-card:not(.active-card)[data-view="rdm"] .canvas-wrap {
+    min-height: 142px;
+  }
+}
+
+
+/* Make the selected step and preview charts readable. Active Step 3 must span the full result area. */
+@media (min-width: 1181px) {
+  .focus-plot-grid {
+    grid-template-rows: minmax(420px, auto) minmax(250px, auto) !important;
+    align-items: stretch;
+  }
+  .focus-card.active-card,
+  .focus-card.active-card[data-view="rdm"] {
+    grid-column: 1 / -1 !important;
+  }
+  .focus-card.active-card canvas,
+  .focus-card.active-card canvas.tall,
+  .focus-card.active-card[data-view="rdm"] canvas,
+  .focus-card.active-card[data-view="rdm"] canvas.tall {
+    height: 300px !important;
+  }
+  .focus-card:not(.active-card) canvas,
+  .focus-card:not(.active-card) canvas.tall {
+    height: 150px !important;
+  }
+  .focus-card:not(.active-card) .canvas-wrap {
+    min-height: 160px !important;
+  }
+  .focus-card:not(.active-card)[data-view="rdm"] {
+    grid-column: span 1 !important;
+  }
+}

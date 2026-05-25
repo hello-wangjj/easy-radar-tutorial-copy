@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>多普勒与距离-多普勒图 | 雷达动手小实验</title>
+  <meta name="description" content="拖动速度观察慢时间相位和距离-多普勒图。">
+  <link rel="stylesheet" href="assets/interactive.css">
+  <script defer src="js/common.js"></script>
+  <script defer src="js/doppler-rdm.js"></script>
+</head>
+<body>
+<nav class="topbar"><a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span><span>雷达动手小实验</span></a><div class="toplinks"><a href="radar-lab.html">综合沙盘</a><a href="sampling-aliasing.html">采样混叠</a><a href="range-pulse-compression.html">距离压缩</a><a href="doppler-rdm.html">多普勒图</a><a href="cfar-threshold.html">CFAR检测</a><a href="../index.html">教程首页</a></div></nav>
+<header class="hero"><p class="eyebrow">Chapter 5 · Doppler</p><h1>速度为什么会跑到慢时间频率里？</h1><p class="lead">调目标速度，看多普勒频移和简化距离-多普勒图一起变化。先抓住“距离看延迟，速度看脉冲间相位变化”的直觉。</p></header><main class="layout"><aside class="panel"><h2>调参数</h2><div class="control"><label for="range">目标距离 <output data-for="range"></output></label><input id="range" type="range" min="8" max="80" value="42" step="1" data-unit=" km"></div><div class="control"><label for="velocity">径向速度 <output data-for="velocity"></output></label><input id="velocity" type="range" min="-90" max="90" value="35" step="1" data-unit=" m/s"></div><div class="control"><label for="snr">目标强度 <output data-for="snr"></output></label><input id="snr" type="range" min="20" max="100" value="76" step="1" data-unit="%"></div><div class="control"><label for="clutter">杂波强度 <output data-for="clutter"></output></label><input id="clutter" type="range" min="0" max="80" value="22" step="1" data-unit="%"></div><div class="mini-readout"><div class="readout"><span>多普勒频移</span><strong id="fd">-</strong></div><div class="readout"><span>慢时间相位步进</span><strong id="phaseStep">-</strong></div></div></aside><section class="stage"><article class="plot-card"><h2>脉冲间相位：目标越快，转得越快</h2><div class="canvas-wrap"><canvas id="slowPlot"></canvas></div></article><article class="plot-card"><h2>玩具版距离-多普勒图</h2><div class="canvas-wrap"><canvas id="rdmPlot" class="tall"></canvas></div></article><article class="note-card"><h2>你应该观察什么</h2><ul><li>距离维度来自回波延迟，所以目标左右移动会改变距离峰的位置。</li><li>速度维度来自脉冲之间的相位变化，目标速度改变后，峰会在多普勒方向移动。</li><li>零速度附近的杂波通常很强，所以动目标检测要特别处理慢时间维度。</li></ul></article></section></main>
+<footer class="footer"><p>这些页面是玩具级直觉实验，不替代教材推导和 MATLAB 严肃实现。</p></footer>
+</body>
+</html>

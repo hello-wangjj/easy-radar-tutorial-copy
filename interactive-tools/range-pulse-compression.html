@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>距离测量与匹配滤波 | 雷达动手小实验</title>
+  <meta name="description" content="观察回波延迟、带宽和匹配滤波输出。">
+  <link rel="stylesheet" href="assets/interactive.css">
+  <script defer src="js/common.js"></script>
+  <script defer src="js/range-pulse-compression.js"></script>
+</head>
+<body>
+<nav class="topbar"><a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span><span>雷达动手小实验</span></a><div class="toplinks"><a href="radar-lab.html">综合沙盘</a><a href="sampling-aliasing.html">采样混叠</a><a href="range-pulse-compression.html">距离压缩</a><a href="doppler-rdm.html">多普勒图</a><a href="cfar-threshold.html">CFAR检测</a><a href="../index.html">教程首页</a></div></nav>
+<header class="hero"><p class="eyebrow">Chapter 4 · Range</p><h1>距离是怎么从一个峰里读出来的？</h1><p class="lead">把目标往远处拖，看回波延迟怎么右移；再改变带宽，看匹配滤波后的峰如何变窄。</p></header><main class="layout"><aside class="panel"><h2>调参数</h2><div class="control"><label for="range">目标距离 <output data-for="range"></output></label><input id="range" type="range" min="6" max="72" value="35" step="1" data-unit=" km"></div><div class="control"><label for="width">脉冲宽度 <output data-for="width"></output></label><input id="width" type="range" min="0.5" max="5" value="2" step="0.1" data-unit=" μs" data-decimals="1"></div><div class="control"><label for="bandwidth">等效带宽 <output data-for="bandwidth"></output></label><input id="bandwidth" type="range" min="1" max="20" value="8" step="0.5" data-unit=" MHz" data-decimals="1"></div><div class="control"><label for="noise">噪声强度 <output data-for="noise"></output></label><input id="noise" type="range" min="0" max="60" value="18" step="1" data-unit="%"></div><div class="mini-readout"><div class="readout"><span>往返延迟</span><strong id="delay">-</strong></div><div class="readout"><span>理论距离分辨率</span><strong id="resolution">-</strong></div></div></aside><section class="stage"><article class="plot-card"><h2>接收回波：远一点，峰就晚一点到</h2><div class="canvas-wrap"><canvas id="echoPlot"></canvas></div></article><article class="plot-card"><h2>匹配滤波输出：峰的位置给距离，峰宽受带宽影响</h2><div class="canvas-wrap"><canvas id="mfPlot"></canvas></div></article><article class="note-card"><h2>你应该观察什么</h2><ul><li>距离测量的第一直觉是 <span class="formula">R = cτ / 2</span>，除以 2 是因为信号走了来回。</li><li>脉宽拉长更像“多发一点能量”，但距离分辨率主要看带宽。</li><li>带宽越大，匹配滤波后的峰越窄，两个近距离目标越容易分开。</li></ul></article></section></main>
+<footer class="footer"><p>这些页面是玩具级直觉实验，不替代教材推导和 MATLAB 严肃实现。</p></footer>
+</body>
+</html>

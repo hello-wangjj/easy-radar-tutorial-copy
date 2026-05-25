@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>雷达动手小实验 | 易懂的雷达信号处理教程</title>
+  <meta name="description" content="一个综合沙盘和四个玩具级在线小实验，帮助读者快速建立采样、距离、多普勒和检测的直觉。">
+  <link rel="stylesheet" href="assets/interactive.css">
+</head>
+<body>
+<nav class="topbar"><a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span><span>雷达动手小实验</span></a><div class="toplinks"><a href="radar-lab.html">综合沙盘</a><a href="sampling-aliasing.html">采样混叠</a><a href="range-pulse-compression.html">距离压缩</a><a href="doppler-rdm.html">多普勒图</a><a href="cfar-threshold.html">CFAR检测</a><a href="../index.html">教程首页</a></div></nav>
+<header class="hero">
+  <p class="eyebrow">Interactive radar intuition</p>
+  <h1>先动手摸一下，再回到公式里。</h1>
+  <p class="lead">这些静态网页只做一件事：把雷达信号处理中最容易“看懂但没感觉”的概念，变成可以拖动、观察、犯错的小实验。</p>
+  <div class="hero-actions"><a class="btn primary" href="radar-lab.html">打开综合沙盘</a><a class="btn" href="sampling-aliasing.html">从采样混叠开始</a><a class="btn" href="../index.html">回到教程首页</a></div>
+</header>
+<main>
+  <section class="tool-grid">
+    <article class="tool-card lab-feature"><span class="badge">综合 · 雷达沙盘</span><h2>一页看完整处理链</h2><p>在俯视图里拖动目标，调带宽、载频、PRF、噪声和杂波，距离压缩、多普勒、距离-多普勒图和 CFAR 会同时变化。</p><div class="tool-actions"><a class="btn primary" href="radar-lab.html">打开沙盘</a></div></article>
+    <article class="tool-card"><span class="badge">第2章 · 信号基础</span><h2>采样与混叠</h2><p>拖动原始频率和采样率，观察采样点为什么会把一个高频信号“伪装”成低频信号。</p><div class="tool-actions"><a class="btn primary" href="sampling-aliasing.html">打开实验</a></div></article>
+    <article class="tool-card"><span class="badge">第4章 · 距离测量</span><h2>距离测量与匹配滤波</h2><p>调目标距离、脉宽、带宽和噪声，观察回波延迟如何变成距离峰，带宽如何让峰变窄。</p><div class="tool-actions"><a class="btn primary" href="range-pulse-compression.html">打开实验</a></div></article>
+    <article class="tool-card"><span class="badge">第5章 · 速度测量</span><h2>多普勒与距离-速度图</h2><p>放一个移动目标，调速度和距离，看它如何在简化的距离-多普勒图上移动。</p><div class="tool-actions"><a class="btn primary" href="doppler-rdm.html">打开实验</a></div></article>
+    <article class="tool-card"><span class="badge">第6章 · 目标检测</span><h2>阈值、虚警、漏检与 CFAR</h2><p>调目标强度、噪声和阈值，亲眼看到阈值太低会虚警，太高会漏检，CFAR 为什么要跟着背景走。</p><div class="tool-actions"><a class="btn primary" href="cfar-threshold.html">打开实验</a></div></article>
+  </section>
+</main>
+<footer class="footer"><p>这些页面是玩具级直觉实验，不替代教材推导和 MATLAB 严肃实现。</p></footer>
+</body>
+</html>

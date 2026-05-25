@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>雷达信号处理沙盘 | 雷达动手小实验</title>
+  <meta name="description" content="用一个更清晰的引导式雷达沙盘，观察距离、速度、距离-多普勒图和 CFAR 检测。">
+  <link rel="stylesheet" href="assets/interactive.css">
+  <script defer src="js/common.js"></script>
+  <script defer src="js/radar-lab.js"></script>
+</head>
+<body class="radar-lab-page guided-lab-page" data-focus="range">
+<nav class="topbar lab-masthead"><a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span><span class="brand-copy"><strong>雷达信号处理学习沙盘</strong><small>拖动目标，观察各处理步骤如何变化</small></span></a><div class="toplinks"><a href="radar-lab.html">学习指南</a><a href="range-pulse-compression.html">原理概览</a><a href="cfar-threshold.html">小贴士</a><a href="../index.html">教程首页</a></div></nav>
+<header class="hero lab-hero guided-hero">
+  <p class="eyebrow">Radar lab · guided mode</p>
+  <h1>一次只看一个问题。</h1>
+  <p class="lead">先拖动左边目标，再看右边当前主图。其它结果先当预览，等你切到下一步时再放大。</p>
+</header>
+<main class="guided-shell">
+  <section class="guided-left" aria-label="雷达场景和少量控制">
+    <article class="lab-scene-card guided-scene-card">
+      <div class="lab-card-head">
+        <div><p class="eyebrow">雷达场景（俯视图）</p><h2>拖动目标</h2></div>
+        <span class="scene-pill" id="beamState">波束命中</span>
+      </div>
+      <svg id="sceneSvg" class="scene-svg" viewBox="0 0 640 430" role="img" aria-label="雷达与目标俯视示意图">
+        <defs>
+          <marker id="arrowHead" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L8,3 z" fill="#b65f4a"></path></marker>
+          <radialGradient id="radarGlow" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#87b6a2" stop-opacity="0.85"></stop><stop offset="100%" stop-color="#0d4746" stop-opacity="0.12"></stop></radialGradient>
+          <linearGradient id="beamFill" x1="0" x2="1"><stop offset="0" stop-color="#c9893f" stop-opacity="0.34"></stop><stop offset="1" stop-color="#87b6a2" stop-opacity="0.08"></stop></linearGradient>
+        </defs>
+        <rect class="scene-bg" x="0" y="0" width="640" height="430" rx="28"></rect>
+        <g id="rangeRings"></g>
+        <g id="azimuthLines"></g>
+        <path id="beamWedge" class="beam-wedge" d=""></path>
+        <line id="losLine" class="los-line" x1="320" y1="360" x2="320" y2="120"></line>
+        <g class="radar-node" transform="translate(320 360)">
+          <circle r="30" class="radar-glow"></circle>
+          <circle r="14" class="radar-dot"></circle>
+          <path d="M-8 9 L0 -14 L8 9 Z" class="radar-mark"></path>
+          <text x="0" y="48" text-anchor="middle">雷达</text>
+        </g>
+        <line id="velocityArrow" class="velocity-arrow" x1="0" y1="0" x2="0" y2="0" marker-end="url(#arrowHead)"></line>
+        <g id="targetGroup" class="target-group" tabindex="0" role="button" aria-label="拖动目标位置">
+          <circle id="targetHalo" r="18" class="target-halo"></circle>
+          <circle id="targetHandle" r="10" class="target-dot"></circle>
+          <text id="targetLabel" x="18" y="-18">目标</text>
+        </g>
+        <text id="angleLabel" class="scene-label" x="332" y="310">方位角</text>
+        <text id="rangeLabel" class="scene-label" x="332" y="334">距离</text>
+      </svg>
+      <p class="scene-hint">☝️ 先拖动橙色目标点，观察右侧各图如何变化</p>
+    </article>
+
+    <article class="lab-control-card guided-control-card">
+      <div class="lab-card-head"><div><p class="eyebrow">场景控制</p><h2>先只动这三个</h2></div></div>
+      <div class="control"><label for="targetRange">距离 <output data-for="targetRange"></output></label><input id="targetRange" type="range" min="5" max="85" value="35" step="1" data-unit=" km"></div>
+      <div class="control"><label for="targetVelocity">速度 <output data-for="targetVelocity"></output></label><input id="targetVelocity" type="range" min="-140" max="140" value="45" step="1" data-unit=" m/s"></div>
+      <div class="control"><label for="noise">噪声 <output data-for="noise"></output></label><input id="noise" type="range" min="0" max="80" value="25" step="1" data-unit="%"></div>
+      <details class="advanced-controls">
+        <summary>高级参数：带宽、PRF、波束等</summary>
+        <div class="control"><label for="targetAngle">方位角 <output data-for="targetAngle"></output></label><input id="targetAngle" type="range" min="-80" max="80" value="28" step="1" data-unit="°"></div>
+        <div class="control"><label for="beamCenter">波束指向 <output data-for="beamCenter"></output></label><input id="beamCenter" type="range" min="-80" max="80" value="28" step="1" data-unit="°"></div>
+        <div class="control"><label for="beamWidth">波束宽度 <output data-for="beamWidth"></output></label><input id="beamWidth" type="range" min="8" max="90" value="36" step="1" data-unit="°"></div>
+        <div class="control"><label for="bandwidth">带宽 <output data-for="bandwidth"></output></label><input id="bandwidth" type="range" min="2" max="80" value="20" step="1" data-unit=" MHz"></div>
+        <div class="control"><label for="fc">载频 <output data-for="fc"></output></label><input id="fc" type="range" min="1" max="24" value="10" step="0.5" data-unit=" GHz" data-decimals="1"></div>
+        <div class="control"><label for="prf">PRF <output data-for="prf"></output></label><input id="prf" type="range" min="0.5" max="5" value="1.2" step="0.1" data-unit=" kHz" data-decimals="1"></div>
+        <div class="control"><label for="clutter">零多普勒杂波 <output data-for="clutter"></output></label><input id="clutter" type="range" min="0" max="90" value="22" step="1" data-unit="%"></div>
+      </details>
+    </article>
+  </section>
+
+  <section class="guided-right" aria-label="当前学习任务和处理结果">
+    <section class="focus-plot-grid">
+      <article class="plot-card focus-card active-card" data-view="range"><div class="plot-kicker">Step 1 · 距离</div><h2>距离压缩输出</h2><p>目标越远，峰越往右。</p><div class="canvas-wrap"><canvas id="labRangePlot"></canvas></div></article>
+      <article class="plot-card focus-card" data-view="doppler"><div class="plot-kicker">Step 2 · 速度</div><h2>多普勒谱</h2><p>径向速度改变，峰在频率轴上移动。</p><div class="canvas-wrap"><canvas id="labDopplerPlot"></canvas></div></article>
+      <article class="plot-card focus-card" data-view="rdm"><div class="plot-kicker">Step 3 · 合成</div><h2>距离-多普勒图</h2><p>一个点同时有距离和速度。</p><div class="canvas-wrap"><canvas id="labRdmPlot" class="tall"></canvas></div></article>
+      <article class="plot-card focus-card" data-view="cfar"><div class="plot-kicker">Step 4 · 检测</div><h2>CFAR 检测</h2><p>噪声变大，门限也要跟着变。</p><div class="canvas-wrap"><canvas id="labCfarPlot"></canvas></div></article>
+    </section>
+
+  </section>
+
+  <nav class="lesson-steps full-lesson-steps" aria-label="学习步骤">
+    <div class="steps-heading">学习步骤</div>
+    <button class="lesson-step active" data-focus="range"><span>1</span><strong>距离</strong><small>理解距离压缩如何测距</small></button>
+    <button class="lesson-step" data-focus="doppler"><span>2</span><strong>速度</strong><small>理解多普勒效应与速度测量</small></button>
+    <button class="lesson-step" data-focus="rdm"><span>3</span><strong>二维图</strong><small>理解距离-多普勒图的含义</small></button>
+    <button class="lesson-step" data-focus="cfar"><span>4</span><strong>检测</strong><small>理解 CFAR 如何找出目标</small></button>
+  </nav>
+</main>
+<footer class="footer"><p>这是教学沙盘：图形和峰宽做了直觉化缩放，用来帮助理解，不替代完整雷达仿真。</p></footer>
+</body>
+</html>

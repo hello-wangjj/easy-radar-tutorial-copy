@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>阈值、虚警、漏检与 CFAR | 雷达动手小实验</title>
+  <meta name="description" content="观察固定阈值和 CFAR 阈值的区别。">
+  <link rel="stylesheet" href="assets/interactive.css">
+  <script defer src="js/common.js"></script>
+  <script defer src="js/cfar-threshold.js"></script>
+</head>
+<body>
+<nav class="topbar"><a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span><span>雷达动手小实验</span></a><div class="toplinks"><a href="radar-lab.html">综合沙盘</a><a href="sampling-aliasing.html">采样混叠</a><a href="range-pulse-compression.html">距离压缩</a><a href="doppler-rdm.html">多普勒图</a><a href="cfar-threshold.html">CFAR检测</a><a href="../index.html">教程首页</a></div></nav>
+<header class="hero"><p class="eyebrow">Chapter 6 · Detection</p><h1>阈值为什么不能随便画一条线？</h1><p class="lead">调噪声、目标强度和阈值，看虚警和漏检怎么出现；再打开 CFAR，观察阈值如何跟着局部背景抬升。</p></header><main class="layout"><aside class="panel"><h2>调参数</h2><div class="control"><label for="target">目标强度 <output data-for="target"></output></label><input id="target" type="range" min="0" max="100" value="58" step="1" data-unit="%"></div><div class="control"><label for="noise">噪声强度 <output data-for="noise"></output></label><input id="noise" type="range" min="5" max="80" value="34" step="1" data-unit="%"></div><div class="control"><label for="threshold">固定阈值 <output data-for="threshold"></output></label><input id="threshold" type="range" min="10" max="95" value="55" step="1" data-unit="%"></div><div class="control"><label for="cfar">CFAR 灵敏度 <output data-for="cfar"></output></label><input id="cfar" type="range" min="1.4" max="4" value="2.4" step="0.1" data-unit="×" data-decimals="1"></div><div class="mini-readout"><div class="readout"><span>固定阈值判断</span><strong id="fixedState">-</strong></div><div class="readout"><span>CFAR 判断</span><strong id="cfarState">-</strong></div></div></aside><section class="stage"><article class="plot-card"><h2>固定阈值：简单，但背景变化时很脆弱</h2><div class="canvas-wrap"><canvas id="fixedPlot"></canvas></div></article><article class="plot-card"><h2>CFAR 阈值：用周围背景估计当前门限</h2><div class="canvas-wrap"><canvas id="cfarPlot"></canvas></div></article><article class="note-card"><h2>你应该观察什么</h2><ul><li>阈值太低，噪声尖峰也会被当成目标，这是虚警。</li><li>阈值太高，真实目标可能过不了门限，这是漏检。</li><li>CFAR 的核心直觉是：不要用一条死线判断所有位置，要让门限随局部背景变化。</li></ul></article></section></main>
+<footer class="footer"><p>这些页面是玩具级直觉实验，不替代教材推导和 MATLAB 严肃实现。</p></footer>
+</body>
+</html>

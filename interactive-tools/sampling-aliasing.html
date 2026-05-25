@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>采样与混叠 | 雷达动手小实验</title>
+  <meta name="description" content="拖动采样率观察混叠现象。">
+  <link rel="stylesheet" href="assets/interactive.css">
+  <script defer src="js/common.js"></script>
+  <script defer src="js/sampling-aliasing.js"></script>
+</head>
+<body>
+<nav class="topbar"><a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span><span>雷达动手小实验</span></a><div class="toplinks"><a href="radar-lab.html">综合沙盘</a><a href="sampling-aliasing.html">采样混叠</a><a href="range-pulse-compression.html">距离压缩</a><a href="doppler-rdm.html">多普勒图</a><a href="cfar-threshold.html">CFAR检测</a><a href="../index.html">教程首页</a></div></nav>
+<header class="hero"><p class="eyebrow">Chapter 2 · Sampling</p><h1>采样为什么会混叠？</h1><p class="lead">不要先背公式。先把采样率往下拖，看采样点什么时候开始分不清真实高频和低频假象。</p></header><main class="layout"><aside class="panel"><h2>调参数</h2><div class="control"><label for="freq">原始信号频率 <output data-for="freq"></output></label><input id="freq" type="range" min="1" max="10" value="4" step="0.1" data-unit=" Hz" data-decimals="1"></div><div class="control"><label for="fs">采样率 <output data-for="fs"></output></label><input id="fs" type="range" min="3" max="50" value="20" step="0.5" data-unit=" Hz" data-decimals="1"></div><div class="control"><label for="phase">初始相位 <output data-for="phase"></output></label><input id="phase" type="range" min="0" max="360" value="20" step="5" data-unit="°"></div><div class="mini-readout"><div class="readout"><span>Nyquist 频率</span><strong id="nyq">-</strong></div><div class="readout"><span>看到的假象频率</span><strong id="alias">-</strong></div></div></aside><section class="stage"><article class="plot-card"><h2>连续信号与采样点</h2><div class="canvas-wrap"><canvas id="timePlot"></canvas></div></article><article class="plot-card"><h2>频率轴上的真实频率与假象频率</h2><div class="canvas-wrap"><canvas id="freqPlot"></canvas></div></article><article class="note-card"><h2>你应该观察什么</h2><ul><li>当 <span class="formula">采样率 &gt; 2 × 信号频率</span> 时，采样点还能描述原信号。</li><li>当采样率不够高时，同一组采样点也可能来自另一个低频信号，这就是混叠。</li><li>混叠不是“采样点少一点”这么简单，而是频率身份被错认了。</li></ul></article></section></main>
+<footer class="footer"><p>这些页面是玩具级直觉实验，不替代教材推导和 MATLAB 严肃实现。</p></footer>
+</body>
+</html>
