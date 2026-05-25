@@ -1,0 +1,23 @@
+/* CSS Variables */
+:root {
+  --ink: #17211d;
+  --muted: #65726b;
+  --soft: #8c9891;
+  --paper: #f6efe3;
+  --paper-2: #fbf7ef;
+  --surface: rgba(255, 253, 248, 0.84);
+  --surface-strong: #fffdf8;
+  --teal: #0d4746;
+  --teal-2: #1e6b68;
+  --sage: #87b6a2;
+  --sand: #ead8bd;
+  --brass: #c9893f;
+  --copper: #9b5834;
+  --line: rgba(23, 33, 29, 0.12);
+  --line-strong: rgba(23, 33, 29, 0.2);
+  --shadow: 0 28px 90px rgba(47, 39, 28, 0.14);
+  --shadow-soft: 0 16px 48px rgba(47, 39, 28, 0.1);
+  --mono: "Cascadia Code", "Fira Code", "Consolas", monospace;
+  --serif: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "SimSun", serif;
+  --sans: "LXGW WenKai Screen", "HarmonyOS Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif;
+}

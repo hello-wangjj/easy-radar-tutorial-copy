@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 320">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f6efe3;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e9f2ea;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="600" height="320" fill="url(#bg)"/>
+
+  <!-- Engineer (left) -->
+  <g transform="translate(120, 80)">
+    <!-- Head -->
+    <circle cx="0" cy="0" r="28" fill="#0d4746"/>
+    <!-- Body -->
+    <rect x="-22" y="32" width="44" height="60" rx="8" fill="#1e6b68"/>
+    <!-- Laptop -->
+    <rect x="-32" y="95" width="64" height="42" rx="4" fill="#87b6a2"/>
+    <rect x="-28" y="99" width="56" height="28" fill="#0d4746" opacity="0.3"/>
+    <!-- Radar icon on screen -->
+    <circle cx="0" cy="113" r="8" fill="none" stroke="#c9893f" stroke-width="2"/>
+    <circle cx="0" cy="113" r="4" fill="#c9893f"/>
+  </g>
+
+  <!-- Students (right) -->
+  <g transform="translate(420, 80)">
+    <!-- Student 1 -->
+    <g transform="translate(-35, 0)">
+      <circle cx="0" cy="0" r="24" fill="#1e6b68"/>
+      <rect x="-18" y="28" width="36" height="50" rx="6" fill="#87b6a2"/>
+      <!-- Book -->
+      <rect x="-15" y="82" width="30" height="22" rx="2" fill="#c9893f"/>
+      <line x1="-15" y1="93" x2="15" y2="93" stroke="#fff" stroke-width="1.5"/>
+    </g>
+
+    <!-- Student 2 -->
+    <g transform="translate(35, 0)">
+      <circle cx="0" cy="0" r="24" fill="#87b6a2"/>
+      <rect x="-18" y="28" width="36" height="50" rx="6" fill="#0d4746"/>
+      <!-- Notes -->
+      <rect x="-15" y="82" width="30" height="22" rx="2" fill="#ead8bd"/>
+      <line x1="-10" y1="88" x2="10" y2="88" stroke="#0d4746" stroke-width="1"/>
+      <line x1="-10" y1="93" x2="10" y2="93" stroke="#0d4746" stroke-width="1"/>
+      <line x1="-10" y1="98" x2="5" y2="98" stroke="#0d4746" stroke-width="1"/>
+    </g>
+  </g>
+
+  <!-- Labels -->
+  <text x="120" y="220" text-anchor="middle" font-family="sans-serif" font-size="18" font-weight="700" fill="#0d4746">工程师</text>
+  <text x="420" y="220" text-anchor="middle" font-family="sans-serif" font-size="18" font-weight="700" fill="#0d4746">学生</text>
+
+  <!-- Divider -->
+  <line x1="300" y1="60" x2="300" y2="200" stroke="#c9893f" stroke-width="2" stroke-dasharray="8,6" opacity="0.4"/>
+</svg>

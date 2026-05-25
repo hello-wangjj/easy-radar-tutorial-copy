@@ -14,9 +14,17 @@
 </head>
 <body><div class="read-progress" aria-hidden="true"><span></span></div>
 <header class="article-top">
-  <nav class="topbar compact">
+  <nav class="topbar home-topbar" aria-label="站点导航">
     <a class="brand" href="../index.html"><img src="../design/icon-concepts/logo-mark-light.svg" alt="教程图标"><span>Easy Radar Tutorial</span></a>
-    <div class="toplinks"><a href="../index.html">首页</a><a href="ch01.html">章节</a><a href="https://github.com/apple-art/easy-radar-tutorial/tree/main/matlab">MATLAB</a><a href="https://github.com/apple-art/easy-radar-tutorial/tree/main/pdf">PDF</a><a href="https://github.com/apple-art/easy-radar-tutorial">GitHub</a></div>
+    <div class="toplinks nav-primary">
+      <a class="nav-link" href="../index.html"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 10.5 12 4l8 6.5"></path><path d="M6.5 9.5V20h4v-5.5h3V20h4V9.5"></path></svg></span><span>首页</span></a>
+      <a class="nav-link" href="../index.html#chapters"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 6.5h14"></path><path d="M5 12h14"></path><path d="M5 17.5h10"></path><path d="M3 6.5h.01"></path><path d="M3 12h.01"></path><path d="M3 17.5h.01"></path></svg></span><span>章节导航</span></a>
+      <a class="nav-link active" href="ch01.html" aria-current="page"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4.5 5.5A3.5 3.5 0 0 1 8 2h11.5v18H8a3.5 3.5 0 0 0-3.5 2z"></path><path d="M8 2v18"></path><path d="M11 7h5"></path><path d="M11 11h4"></path></svg></span><span>开始阅读</span></a>
+      <a class="nav-link" href="https://github.com/apple-art/easy-radar-tutorial/releases/latest"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3v11"></path><path d="m7 9 5 5 5-5"></path><path d="M5 19h14"></path></svg></span><span>配套资源</span></a>
+    </div>
+    <div class="nav-terminal">
+      <a class="nav-link github-link" href="https://github.com/apple-art/easy-radar-tutorial"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 19c-4.6 1.4-4.6-2.4-6.4-2.9"></path><path d="M15 22v-3.8c0-1 .1-1.4-.5-2 2.9-.3 5.9-1.4 5.9-6.4 0-1.4-.5-2.6-1.3-3.5.1-.4.6-1.8-.2-3.5 0 0-1.1-.4-3.6 1.3a12.4 12.4 0 0 0-6.6 0C6.2 2.4 5.1 2.8 5.1 2.8c-.8 1.7-.3 3.1-.2 3.5-.8.9-1.3 2.1-1.3 3.5 0 5 3 6.1 5.9 6.4-.4.4-.7.9-.8 1.7"></path></svg></span><span>GitHub</span></a>
+    </div>
   </nav>
 </header>
 <div class="article-layout">
@@ -27,7 +35,7 @@
   <main class="article-main reveal">
     <article class="prose chapter-prose">
       <h1>第1章 雷达是什么</h1>
-      <section class="chapter-section" data-section="ch01-s01"><h2 id="ch01-s01" class="section-title">雷达是什么</h2>
+      <section class="chapter-section" data-section="ch01-s01"><h2 id="ch01-s01" class="section-title">1.1 雷达是什么</h2>
 <p>打开天气预报，常能看到一张彩色的降雨回波图。它来自天气雷达：雷达向天空发射电磁波，再把云团和雨滴反射回来的回波整理成图。</p>
 <p>机场旁边缓慢旋转的监视天线，高速路口的测速设备，汽车前保险杠里的毫米波模块，也都在做类似的事：主动发出电磁波，接收目标反射回来的回波，再从回波里判断前方有什么、在什么位置、是不是在运动。</p>
 <p>RADAR 来自 Radio Detection And Ranging，直译为“无线电探测与测距”。这个名字保留了雷达最早的出发点：用无线电波去发现目标，并估计目标距离。后来雷达能做的事越来越多，可以测速度、测方向，也可以参与成像和识别；但这些能力都建立在同一个基础上：先发出电磁波，再从回波里提取信息。</p>
@@ -92,7 +100,6 @@ $$</div>
 <figure><img src="https://pico-tcq.oss-cn-shanghai.aliyuncs.com/img/fig1_4_book_architecture.png" alt="图1.9 全书章节安排与依赖关系" loading="lazy"><figcaption>图1.9 全书章节安排与依赖关系</figcaption></figure>
 <p>图1.9 是按章节整理出的路线图。前面几章先把信号和雷达回波说清楚，中间几章分别处理距离、速度、检测和角度，最后再收束到完整程序。本书正文以脉冲雷达为主线：发出一个或一串脉冲，接收回波，再从回波中整理出目标信息。</p></section>
     </article>
-    <div class="article-actions"><a class="btn" href="../pdf/%E6%98%93%E6%87%82%E7%9A%84%E9%9B%B7%E8%BE%BE%E4%BF%A1%E5%8F%B7%E5%A4%84%E7%90%86%E2%80%94%E2%80%94%E7%AC%AC%E4%B8%80%E7%AB%A0%EF%BC%9A%E9%9B%B7%E8%BE%BE%E6%98%AF%E4%BB%80%E4%B9%88.pdf">本章 PDF</a><a class="btn ghost" href="https://github.com/apple-art/easy-radar-tutorial">GitHub 仓库</a></div>
   </main>
 </div>
 </body>

@@ -140,3 +140,104 @@
   });
   updateProgress(); updateActive();
 })();
+
+// Appreciation modal
+(function(){
+  const btn = document.getElementById('appreciationBtn');
+  const modal = document.getElementById('appreciationModal');
+  const closeBtn = document.getElementById('modalClose');
+  const overlay = modal?.querySelector('.modal-overlay');
+
+  if(!btn || !modal) return;
+
+  function openModal() {
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  btn.addEventListener('click', openModal);
+  closeBtn?.addEventListener('click', closeModal);
+  overlay?.addEventListener('click', closeModal);
+
+  document.addEventListener('keydown', (e) => {
+    if(e.key === 'Escape' && modal.getAttribute('aria-hidden') === 'false') {
+      closeModal();
+    }
+  });
+})();
+
+// ECharts cognitive curve initialization
+(function(){
+  if(typeof echarts === 'undefined') return;
+
+  window.addEventListener('load', function() {
+    const chartDom = document.getElementById('curve-chart');
+    if(!chartDom) return;
+
+    const chart = echarts.init(chartDom);
+    const option = {
+      legend: {
+        data: ['本教程', '传统教材'],
+        top: '8%',
+        right: '10%',
+        textStyle: { color: '#4a5751', fontSize: 13, fontWeight: 600 }
+      },
+      grid: { left: '12%', right: '8%', top: '22%', bottom: '15%' },
+      xAxis: {
+        type: 'category',
+        data: ['第1章', '第2章', '第3章', '第4章', '第5章'],
+        axisLine: { lineStyle: { color: '#7d8b84' } },
+        axisLabel: { color: '#4a5751', fontSize: 13, fontWeight: 600 }
+      },
+      yAxis: {
+        type: 'value',
+        name: '认知难度',
+        nameTextStyle: { color: '#4a5751', fontSize: 13, fontWeight: 600 },
+        axisLine: { show: false },
+        axisTick: { show: false },
+        axisLabel: { show: false },
+        splitLine: { lineStyle: { color: '#e5e5e5', type: 'dashed' } }
+      },
+      series: [
+        {
+          name: '本教程',
+          data: [1, 1.8, 3.2, 4.8, 6.5],
+          type: 'line',
+          smooth: true,
+          lineStyle: { color: '#87b6a2', width: 3 },
+          areaStyle: {
+            color: {
+              type: 'linear',
+              x: 0, y: 0, x2: 0, y2: 1,
+              colorStops: [
+                { offset: 0, color: 'rgba(135, 182, 162, 0.3)' },
+                { offset: 1, color: 'rgba(135, 182, 162, 0.05)' }
+              ]
+            }
+          },
+          symbol: 'circle',
+          symbolSize: 8,
+          itemStyle: { color: '#87b6a2', borderColor: '#fff', borderWidth: 2 }
+        },
+        {
+          name: '传统教材',
+          data: [1, 1.5, 6.8, 7.2, 7.5],
+          type: 'line',
+          smooth: true,
+          lineStyle: { color: '#d97757', width: 3 },
+          symbol: 'circle',
+          symbolSize: 8,
+          itemStyle: { color: '#d97757', borderColor: '#fff', borderWidth: 2 }
+        }
+      ]
+    };
+
+    chart.setOption(option);
+    window.addEventListener('resize', () => chart.resize());
+  });
+})();

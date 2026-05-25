@@ -1,0 +1,226 @@
+/* Homepage Styles */
+
+/* Hero Section */
+.hero {
+  position: relative;
+  min-height: auto;
+  overflow: hidden;
+  padding-top: 66px;
+  padding-bottom: 0;
+  background: url("../../design/bg-hero.png") center / cover no-repeat;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  right: -18vw;
+  top: 48px;
+  width: min(780px, 58vw);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: repeating-radial-gradient(circle, rgba(13, 71, 70, 0.12) 0 1px, transparent 1px 34px);
+  mask-image: linear-gradient(90deg, transparent, #000 24%, #000);
+  opacity: 0.28;
+}
+
+.hero::after {
+  display: none;
+}
+
+.hero-shell {
+  width: min(1120px, calc(100% - 64px));
+  margin: 0 auto;
+  padding: clamp(52px, 7vw, 88px) 0 clamp(58px, 7vw, 92px);
+  position: relative;
+  z-index: 2;
+}
+
+.hero-banner {
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(240px, 340px) minmax(0, 1fr);
+  gap: clamp(52px, 7vw, 100px);
+  align-items: center;
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.hero-banner::before,
+.hero-banner::after,
+.hero-art {
+  display: none;
+}
+
+.hero-cover {
+  position: relative;
+  z-index: 3;
+  margin: 0;
+}
+
+.book-cover-img {
+  display: block;
+  width: 100%;
+  max-width: 340px;
+  height: auto;
+  border: 1px solid rgba(69, 55, 35, 0.16);
+  border-radius: 2px;
+  background: #d6bd8d;
+  box-shadow: 0 28px 70px rgba(75, 52, 26, 0.24);
+}
+
+.hero-copy {
+  width: auto;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.hero-mark {
+  display: none;
+}
+
+.hero-copy h1 {
+  max-width: 780px;
+  margin: 0 0 28px;
+  color: #0a4242;
+  font-size: clamp(42px, 5.2vw, 70px);
+  line-height: 1.14;
+  letter-spacing: 0.02em;
+  text-shadow: none;
+}
+
+.hero-copy p {
+  max-width: 620px;
+  color: #1f2c29;
+  font-family: var(--sans);
+  font-size: clamp(20px, 2vw, 27px);
+  line-height: 1.5;
+  letter-spacing: 0;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+  justify-content: center;
+}
+
+.hero-proof {
+  width: min(460px, 100%);
+  min-height: auto;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
+  margin-top: 26px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  color: #0d4746;
+  backdrop-filter: none;
+}
+
+.hero-stat {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto auto;
+  column-gap: 10px;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+}
+
+.hero-stat:not(:first-child)::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 8px;
+  bottom: 8px;
+  width: 1px;
+  background: rgba(68, 55, 35, 0.22);
+}
+
+.hero-stat strong {
+  color: #0a4d4c;
+  font-size: clamp(30px, 3vw, 42px);
+  line-height: 0.95;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+}
+
+.hero-stat > span:not(.stat-icon) {
+  color: #41524a;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.hero-social-cards {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+
+.github-star-card,
+.zhihu-column-card {
+  display: inline-flex;
+  align-items: stretch;
+  margin-top: 32px;
+  overflow: hidden;
+  border: 1px solid rgba(13, 71, 70, 0.2);
+  border-radius: 6px;
+  background: rgba(255, 250, 236, 0.68);
+  color: #10241f;
+  box-shadow: 0 8px 18px rgba(75, 52, 26, 0.08);
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.zhihu-column-card {
+  border-color: rgba(6, 102, 235, 0.2);
+  background: rgba(240, 247, 255, 0.68);
+}
+
+.github-star-card span,
+.github-star-card strong,
+.zhihu-column-card span,
+.zhihu-column-card strong {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 32px;
+  padding: 0 12px;
+}
+
+.github-star-card span,
+.zhihu-column-card span {
+  background: rgba(255, 253, 248, 0.55);
+}
+
+.github-star-card strong,
+.zhihu-column-card strong {
+  border-left: 1px solid rgba(13, 71, 70, 0.16);
+  font-weight: 800;
+}
+
+.github-star-card svg,
+.zhihu-column-card svg {
+  width: 15px;
+  height: 15px;
+  fill: currentColor;
+  stroke: none;
+}
+
+.zhihu-column-card svg {
+  fill: #0084ff;
+}

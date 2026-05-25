@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Radar Online Reading References</title>
+  <style>
+    :root { color-scheme: light; --ink:#16231f; --muted:#65726b; --paper:#fbf4e8; --card:#fffdf8; --teal:#0d4746; --brass:#c9893f; --line:rgba(22,35,31,.14); }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family: "Noto Serif SC", "Source Han Serif SC", "Microsoft YaHei", serif; color:var(--ink); background: radial-gradient(circle at 12% 0%, rgba(201,137,63,.18), transparent 24rem), radial-gradient(circle at 90% 8%, rgba(13,71,70,.14), transparent 30rem), linear-gradient(135deg,#fbf4e8,#eef4ec); }
+    main { width:min(980px, calc(100% - 32px)); margin:48px auto 80px; }
+    header { padding:34px 38px; border:1px solid rgba(255,255,255,.8); border-radius:30px; background:rgba(255,253,248,.82); box-shadow:0 24px 80px rgba(47,39,28,.12); }
+    h1 { margin:0 0 12px; font-size:clamp(34px,6vw,64px); line-height:1.08; letter-spacing:-.05em; }
+    .tl { margin:22px 0 0; padding:18px 20px; border-left:5px solid var(--teal); border-radius:18px; background:rgba(13,71,70,.07); line-height:1.8; }
+    section { margin-top:34px; padding:30px; border:1px solid rgba(255,255,255,.82); border-radius:28px; background:rgba(255,253,248,.86); box-shadow:0 18px 54px rgba(47,39,28,.09); }
+    h2 { margin:0 0 18px; font-size:32px; letter-spacing:-.03em; }
+    h3 { margin:28px 0 12px; font-size:23px; }
+    p, li { font-size:17px; line-height:1.85; }
+    ul, ol { padding-left:1.35em; }
+    figure { margin:22px 0 28px; }
+    img { display:block; width:100%; height:auto; border-radius:18px; background:#fff; box-shadow:0 18px 46px rgba(47,39,28,.13); }
+    figcaption { margin-top:10px; color:var(--muted); font-family:"Microsoft YaHei", sans-serif; font-size:14px; line-height:1.65; text-align:center; }
+    pre { overflow:auto; padding:18px 20px; border-radius:18px; color:#f9ecd5; background:linear-gradient(135deg,#0b3131,#174e4b); line-height:1.55; }
+    code { font-family:"Cascadia Code", Consolas, monospace; }
+    a { color:#9b5834; text-decoration-thickness:1px; text-underline-offset:3px; }
+    .grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+    .pill { display:inline-block; margin:0 8px 8px 0; padding:7px 11px; border-radius:999px; background:rgba(201,137,63,.14); color:#89542f; font-family:"Microsoft YaHei", sans-serif; font-weight:700; }
+    @media (max-width:760px) { main{width:min(100% - 22px, 760px); margin-top:22px;} header,section{padding:22px;border-radius:22px;} .grid{grid-template-columns:1fr;} }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <p class="pill">Quick references</p><p class="pill">Easy Radar Tutorial</p>
+    <h1>雷达信号处理网页阅读体验参考</h1>
+    <p class="tl">你的站点首页已经有明确的“暖纸张 + 雷达仪表”气质。下一步最有收益的不是再堆装饰，而是把章节页做成真正帮助理解的在线教材：图文节奏、公式卡、互动入口、学习地图和轻量检查。</p>
+  </header>
+
+  <section>
+    <h2>Current State</h2>
+    <figure><img src="references/current-easy-radar-home.png" alt="当前首页"><figcaption>当前首页：品牌感强，章节卡片干净。</figcaption></figure>
+    <figure><img src="references/current-easy-radar-chapter04-top.png" alt="当前第4章阅读页"><figcaption>当前第4章：正文可读，左侧目录清楚；下一步应增强“理解辅助层”。</figcaption></figure>
+  </section>
+
+  <section>
+    <h2>Key Patterns</h2>
+    <ol>
+      <li><strong>解释节奏</strong>：文字、公式、图、互动需要交替出现，读者每一屏都知道自己正在理解什么。</li>
+      <li><strong>学习地图</strong>：目录不仅是跳转列表，还要显示当前位置、下一节、章节关系和搜索。</li>
+      <li><strong>图承担推理</strong>：技术图应表达输入、处理、输出和参数变化，而不是只做配图。</li>
+      <li><strong>旁路帮助</strong>：术语卡、公式卡、MATLAB 对应脚本、检查题可以减少掉队。</li>
+      <li><strong>首页路径感</strong>：8 个章节可以进一步连成雷达处理链。</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>References</h2>
+    <h3>Magazine-grade technical explainer</h3>
+    <div class="grid">
+      <figure><img src="references/distill-feature-visualization.png" alt="Distill Feature Visualization"><figcaption>Distill：大图开场、元信息区、技术杂志式排版。</figcaption></figure>
+      <figure><img src="references/ciechanowski-sound.png" alt="Ciechanowski Sound"><figcaption>Ciechanowski：极干净长文版心，互动小组件穿插解释。</figcaption></figure>
+    </div>
+    <h3>Signal-processing-native visual learning</h3>
+    <figure><img src="references/schaedler-circles-sines-signals.png" alt="Seeing Circles Sines Signals"><figcaption>Seeing Circles, Sines, and Signals：公式、图、旁注、章节入口强叙事，和雷达信号处理最贴近。</figcaption></figure>
+    <h3>Interactive concept playground</h3>
+    <div class="grid">
+      <figure><img src="references/seeing-theory.png" alt="Seeing Theory"><figcaption>Seeing Theory：用视觉入口把抽象统计变成章节化互动体验。</figcaption></figure>
+      <figure><img src="references/mathigon-home.png" alt="Mathigon"><figcaption>Mathigon：课程、工具、活动在同一学习空间里。</figcaption></figure>
+    </div>
+    <h3>Online book infrastructure</h3>
+    <div class="grid">
+      <figure><img src="references/d2l-home.png" alt="Dive into Deep Learning"><figcaption>D2L：长目录、资源入口、代码/Notebook 链接，适合技术教材。</figcaption></figure>
+      <figure><img src="references/openstax-reader.png" alt="OpenStax Reader"><figcaption>OpenStax：目录、搜索、字号、标注等在线书工具完整。</figcaption></figure>
+    </div>
+    <h3>Retention and progress</h3>
+    <figure><img src="references/quantum-country-qcvc.png" alt="Quantum Country"><figcaption>Quantum Country：主正文 + 右侧学习路径 + 内嵌记忆提示。</figcaption></figure>
+  </section>
+
+  <section>
+    <h2>Apply To Your Site</h2>
+    <h3>1. 阅读页加“理解辅助右栏”</h3>
+    <pre><code>+-------------------------------------------------------------+
+| top nav                                                     |
++------------+--------------------------------+---------------+
+| chapter    | article                         | concept rail  |
+| toc        | h1 / h2 / prose / math / figs   | key formula   |
+|            |                                | variables     |
+|            |                                | matlab link   |
+|            |                                | checkpoint    |
++------------+--------------------------------+---------------+</code></pre>
+    <p>优先试点第4章“距离测量”：公式、图、代码、直觉例子都齐，最容易看出收益。</p>
+    <h3>2. 关键公式变成“公式卡”</h3>
+    <pre><code>+--------------------------------------------------+
+| R = c * Delta t / 2                              |
+|--------------------------------------------------|
+| c: 光速      Delta t: 往返延迟      /2: 来回路程 |
+| 工程直觉: 多等 1 us，目标距离就多约 150 m       |
++--------------------------------------------------+</code></pre>
+    <h3>3. 首页章节卡片升级成“雷达处理链”</h3>
+    <pre><code>目标/场景 -> 信号基础 -> 发射接收 -> 距离 -> 速度 -> 检测 -> 测角 -> 完整流程</code></pre>
+    <h3>4. 互动工具内嵌进章节</h3>
+    <p>把已有 interactive-tools 作为章节内“试一试”模块：距离压缩工具放第4章，RDM 放第5章，CFAR 放第6章。</p>
+    <h3>5. 每节末尾加轻量检查</h3>
+    <pre><code>你现在应该能回答：
+[ ] 为什么雷达距离公式要除以 2？
+[ ] 如果回波延迟 1 ms，目标距离是多少？
+[ ] 距离分辨率为什么和脉宽有关？</code></pre>
+  </section>
+
+  <section>
+    <h2>Suggested Priority</h2>
+    <ol>
+      <li>第4章阅读页试点：公式卡、概念右栏、章节内互动入口。</li>
+      <li>首页学习路径：在 hero 和章节卡之间加雷达处理链。</li>
+      <li>互动工具内嵌：把工具从独立页带回对应章节。</li>
+      <li>正文图语言统一：先做第4章和第5章。</li>
+      <li>在线书功能：搜索、字号、上一节/下一节、公式复制、MATLAB 链接卡。</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Sources</h2>
+    <p><a href="https://distill.pub/2017/feature-visualization/">Distill</a> · <a href="https://ciechanow.ski/sound/">Ciechanowski</a> · <a href="https://jackschaedler.github.io/circles-sines-signals/">Seeing Circles, Sines, and Signals</a> · <a href="https://seeing-theory.brown.edu/">Seeing Theory</a> · <a href="https://mathigon.org/">Mathigon</a> · <a href="https://d2l.ai/">D2L</a> · <a href="https://quantum.country/qcvc">Quantum Country</a> · <a href="https://openstax.org/books/university-physics-volume-1/pages/1-introduction">OpenStax</a></p>
+  </section>
+</main>
+</body>
+</html>
