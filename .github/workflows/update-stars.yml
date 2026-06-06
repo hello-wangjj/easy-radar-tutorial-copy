@@ -1,0 +1,87 @@
+name: Update GitHub stars
+
+on:
+  schedule:
+    # Daily at 20:00 UTC, 04:00 in Asia/Shanghai.
+    - cron: "0 20 * * *"
+  watch:
+    types: [started]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-stars:
+    if: github.event_name != 'watch' || github.event.repository.full_name == github.repository
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Update star count
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+
+          python - <<'PY'
+          import json
+          import os
+          import re
+          import urllib.request
+          from pathlib import Path
+
+          repo = os.environ["REPO"]
+          token = os.environ["GITHUB_TOKEN"]
+          request = urllib.request.Request(
+              f"https://api.github.com/repos/{repo}",
+              headers={
+                  "Accept": "application/vnd.github+json",
+                  "Authorization": f"Bearer {token}",
+                  "X-GitHub-Api-Version": "2022-11-28",
+              },
+          )
+          with urllib.request.urlopen(request, timeout=30) as response:
+              payload = json.load(response)
+
+          stars = payload.get("stargazers_count")
+          if not isinstance(stars, int):
+              raise SystemExit(f"Unexpected stargazers_count: {stars!r}")
+          stars = str(stars)
+
+          path = Path("index.html")
+          html = path.read_text(encoding="utf-8")
+
+          html = re.sub(
+              r'(<a class="github-star-card"[^>]*aria-label="GitHub Stars )\d+(")',
+              rf"\g<1>{stars}\2",
+              html,
+              count=1,
+          )
+          html = re.sub(
+              r'(<strong data-github-star-count>)\d+(</strong>)',
+              rf"\g<1>{stars}\2",
+              html,
+              count=1,
+          )
+
+          path.write_text(html, encoding="utf-8")
+          PY
+
+      - name: Commit update
+        run: |
+          set -euo pipefail
+
+          if git diff --quiet -- index.html; then
+            echo "Star count already up to date."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git commit -m "Update GitHub star count"
+          git push
